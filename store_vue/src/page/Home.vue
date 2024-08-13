@@ -12,9 +12,9 @@
       <!-- 特色產品區域 -->
       <section class="featured-products">
         <h2>Featured Products</h2>
-        <div class="products-grid">
+        <div class="featured-products-grid">
           <!-- 假設有多個產品卡片 -->
-          <div class="product-card" v-for="product in featuredProducts" :key="product.fpId">
+          <div class="featured-product-card" v-for="product in featuredProducts" :key="product.fpId">
             <img :src="product.image" :alt="product.name" />
             <h3>{{ product.name }}</h3>
             <p>{{ product.price }}</p>
@@ -65,11 +65,18 @@
       <section class="filtered-products">
         <h2>Filtered Products</h2>
         <div class="products-grid">
-          <div class="product-card" v-for="product in normalProduct" :key="product.npId">
+          <div class="product-card" v-for="product in normalProduct" :key="product.id">
             <img :src="product.image" :alt="product.name" />
             <h3>{{ product.name }}</h3>
             <p>{{ product.price }}</p>
           </div>
+        </div>
+
+        <!-- 分頁導航 -->
+        <div class="pagination">
+          <button @click="previousPage" :disabled="currentPage === 1">Previous</button>
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
         </div>
       </section>
     </section>
@@ -85,6 +92,9 @@
   const selectedTypes = ref([]);  // 追蹤選中的商品類型
   const productTypes = ref(['Electronics', 'Fashion', 'Home', 'Beauty', 'Toys']); // 商品類型選項
 
+  const currentPage = ref(1);  // 當前頁碼
+  const itemsPerPage = ref(6);  // 每頁顯示的產品數量
+
   // 假設我們有一個 featuredProducts 的數據源
   const featuredProducts = ref([
     { fpId: 1, name: 'Product 1', price: '$29.99', image: 'path-to-image-1.jpg' ,type: 1},
@@ -98,9 +108,25 @@
     {npId: 2, name: 'Product b',price: '$209.99', image: 'path-to-image-1.jpg' ,type: 3}
   ]);
 
-  const filteredProducts = computed(() => {
-  //用過濾器的值去資料庫搜
-  });
+
+  const paginatedProducts = computed(() => {
+});
+
+const totalPages = computed(() => {
+  
+});
+
+const previousPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+};
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+};
 
   const applyFilters = () => {
     // Apply filters logic (already handled by computed property)
@@ -146,20 +172,20 @@
     text-align: center;
   }
   
-  .products-grid {
+  .featured-products-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
   
-  .product-card {
+  .featured-product-card {
     border: 1px solid #eaeaea;
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease;
   }
   
-  .product-card:hover {
+  .featured-product-card:hover {
     transform: translateY(-5px);
   }
   /* 過濾器與過濾後產品列表的佈局 */
@@ -180,6 +206,27 @@
   padding: 20px;
 }
 
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.product-card {
+  flex: 1 1 calc(33.333% - 20px);
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  height: 300px;
+  width: 300px;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
 .checkbox-group {
   display: flex;
   flex-direction: column;
@@ -196,6 +243,32 @@
   padding: 5px 10px;
   margin-right: 5px;
   border-radius: 5px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  padding: 10px 20px;
+  line-height: 20px;
 }
 </style>
   
