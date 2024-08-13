@@ -21,12 +21,50 @@
           </div>
         </div>
       </section>
+
+      <!-- 產品過濾區域 -->
+      <section class="product-filter">
+        <h3>Filter Products</h3>
+        <div class="filter-group">
+            <label for="category">Category</label>
+            <select id="category" v-model="selectedCategory">
+            <option value="">All</option>
+            <option value="electronics">Electronics</option>
+            <option value="fashion">Fashion</option>
+            <option value="home">Home</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="price">Price Range</label>
+            <input type="range" id="price" v-model="priceRange" min="0" max="100" />
+            <span>{{ priceRange }}</span>
+        </div>
+        <div class="filter-group">
+            <button @click="applyFilters">Apply Filters</button>
+        </div>
+      </section>
+
+       <!-- 過濾後的產品列表 -->
+      <section class="filtered-products">
+        <h2>Filtered Products</h2>
+        <div class="products-grid">
+            <div class="product-card" v-for="product in filteredProducts" :key="product.id">
+            <img :src="product.image" :alt="product.name" />
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.price }}</p>
+            </div>
+        </div>
+      </section>
+
     </div>
   </template>
   
   <script setup>
-  import { ref } from 'vue';
-  
+  import { ref , computed } from 'vue';
+
+  const selectedCategory = ref('');
+  const priceRange = ref(100);
+
   // 假設我們有一個 featuredProducts 的數據源
   const featuredProducts = ref([
     { id: 1, name: 'Product 1', price: '$29.99', image: 'path-to-image-1.jpg' },
@@ -34,9 +72,20 @@
     { id: 3, name: 'Product 3', price: '$49.99', image: 'path-to-image-3.jpg' },
     { id: 4, name: 'Product 4', price: '$59.99', image: 'path-to-image-4.jpg' }
   ]);
+
+  const filteredProducts = computed(() => {
+  return featuredProducts.value.filter(product => {
+    return (selectedCategory.value === '' || product.category === selectedCategory.value) &&
+           parseFloat(product.price.replace('$', '')) <= priceRange.value;
+    });
+  });
+
+  const applyFilters = () => {
+    // Apply filters logic (already handled by computed property)
+  };
   </script>
   
-  <style scoped>
+<style scoped>
   /* 英雄區域的樣式 */
   .hero {
     background-image: url('path-to-hero-image.jpg');
@@ -91,5 +140,59 @@
   .product-card:hover {
     transform: translateY(-5px);
   }
+  /* 產品過濾區域的樣式 */
+.product-filter {
+  padding: 50px 20px;
+  background-color: #f7f7f7;
+}
+
+.filter-group {
+  margin-bottom: 20px;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.filter-group select, .filter-group input[type="range"] {
+  width: 100%;
+}
+
+.filter-group button {
+  padding: 10px 20px;
+  background-color: orange;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-group button:hover {
+  background-color: darkorange;
+}
+
+/* 過濾後的產品列表樣式 */
+.filtered-products {
+  padding: 50px 20px;
+}
+
+.filtered-products .products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.filtered-products .product-card {
+  border: 1px solid #eaeaea;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.filtered-products .product-card:hover {
+  transform: translateY(-5px);
+}
   </style>
   
