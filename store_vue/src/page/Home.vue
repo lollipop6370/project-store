@@ -22,39 +22,57 @@
         </div>
       </section>
 
-      <!-- 產品過濾區域 -->
-      <section class="product-filter">
+     <!-- 產品過濾區域和過濾後產品列表 -->
+    <section class="product-section">
+      <!-- 左側過濾器區域 -->
+      <aside class="product-filter">
         <h3>Filter Products</h3>
-        <div class="filter-group">
-            <label for="category">Category</label>
-            <select id="category" v-model="selectedCategory">
-            <option value="">All</option>
-            <option value="electronics">Electronics</option>
-            <option value="fashion">Fashion</option>
-            <option value="home">Home</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label for="price">Price Range</label>
-            <input type="range" id="price" v-model="priceRange" min="0" max="100" />
-            <span>{{ priceRange }}</span>
-        </div>
-        <div class="filter-group">
-            <button @click="applyFilters">Apply Filters</button>
-        </div>
-      </section>
 
-       <!-- 過濾後的產品列表 -->
+        <!-- 商品類型選擇區域 -->
+        <div class="filter-group">
+          <label>Product Type</label>
+          <div class="checkbox-group">
+            <label v-for="type in productTypes" :key="type">
+              <input type="checkbox" :value="type" v-model="selectedTypes" />
+              {{ type }}
+            </label>
+          </div>
+        </div>
+
+        <!-- 顯示選中的類型 -->
+        <div class="selected-types" v-if="selectedTypes.length > 0">
+          <h4>Selected Types:</h4>
+          <span v-for="type in selectedTypes" :key="type">{{ type }}</span>
+        </div>
+
+        <!-- 如果未選擇類型，顯示 "All" -->
+        <div class="selected-types" v-else>
+          <h4>All Products</h4>
+        </div>
+
+        <div class="filter-group">
+          <label for="price">Price Range</label>
+          <input type="range" id="price" v-model="priceRange" min="0" max="100" />
+          <span>{{ priceRange }}</span>
+        </div>
+
+        <div class="filter-group">
+          <button @click="applyFilters">Apply Filters</button>
+        </div>
+      </aside>
+
+      <!-- 過濾後的產品列表 -->
       <section class="filtered-products">
         <h2>Filtered Products</h2>
         <div class="products-grid">
-            <div class="product-card" v-for="product in normalProduct" :key="product.npId">
+          <div class="product-card" v-for="product in normalProduct" :key="product.npId">
             <img :src="product.image" :alt="product.name" />
             <h3>{{ product.name }}</h3>
             <p>{{ product.price }}</p>
-            </div>
+          </div>
         </div>
       </section>
+    </section>
 
     </div>
   </template>
@@ -62,8 +80,10 @@
   <script setup>
   import { ref , computed } from 'vue';
 
-  const selectedCategory = ref('');
   const priceRange = ref(100);
+
+  const selectedTypes = ref([]);  // 追蹤選中的商品類型
+  const productTypes = ref(['Electronics', 'Fashion', 'Home', 'Beauty', 'Toys']); // 商品類型選項
 
   // 假設我們有一個 featuredProducts 的數據源
   const featuredProducts = ref([
@@ -79,7 +99,7 @@
   ]);
 
   const filteredProducts = computed(() => {
-    //讀取過濾器，前往資料庫搜尋
+  //用過濾器的值去資料庫搜
   });
 
   const applyFilters = () => {
@@ -142,59 +162,40 @@
   .product-card:hover {
     transform: translateY(-5px);
   }
-  /* 產品過濾區域的樣式 */
+  /* 過濾器與過濾後產品列表的佈局 */
+.product-section {
+  display: flex;
+}
+
 .product-filter {
-  padding: 50px 20px;
-  background-color: #f7f7f7;
+  width: 250px;
+  height: 1500px;
+  padding: 60px;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
 }
 
-.filter-group {
-  margin-bottom: 20px;
-}
-
-.filter-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-.filter-group select, .filter-group input[type="range"] {
-  width: 100%;
-}
-
-.filter-group button {
-  padding: 10px 20px;
-  background-color: orange;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.filter-group button:hover {
-  background-color: darkorange;
-}
-
-/* 過濾後的產品列表樣式 */
 .filtered-products {
-  padding: 50px 20px;
+  flex-grow: 1;
+  padding: 20px;
 }
 
-.filtered-products .products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
-.filtered-products .product-card {
-  border: 1px solid #eaeaea;
-  padding: 20px;
-  text-align: center;
-  transition: transform 0.3s ease;
+.selected-types {
+  margin-top: 15px;
 }
 
-.filtered-products .product-card:hover {
-  transform: translateY(-5px);
+.selected-types span {
+  display: inline-block;
+  background-color: #eaeaea;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border-radius: 5px;
 }
-  </style>
+</style>
   
