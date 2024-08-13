@@ -14,7 +14,7 @@
         <h2>Featured Products</h2>
         <div class="products-grid">
           <!-- 假設有多個產品卡片 -->
-          <div class="product-card" v-for="product in featuredProducts" :key="product.id">
+          <div class="product-card" v-for="product in featuredProducts" :key="product.fpId">
             <img :src="product.image" :alt="product.name" />
             <h3>{{ product.name }}</h3>
             <p>{{ product.price }}</p>
@@ -48,7 +48,7 @@
       <section class="filtered-products">
         <h2>Filtered Products</h2>
         <div class="products-grid">
-            <div class="product-card" v-for="product in filteredProducts" :key="product.id">
+            <div class="product-card" v-for="product in normalProduct" :key="product.npId">
             <img :src="product.image" :alt="product.name" />
             <h3>{{ product.name }}</h3>
             <p>{{ product.price }}</p>
@@ -67,17 +67,19 @@
 
   // 假設我們有一個 featuredProducts 的數據源
   const featuredProducts = ref([
-    { id: 1, name: 'Product 1', price: '$29.99', image: 'path-to-image-1.jpg' },
-    { id: 2, name: 'Product 2', price: '$39.99', image: 'path-to-image-2.jpg' },
-    { id: 3, name: 'Product 3', price: '$49.99', image: 'path-to-image-3.jpg' },
-    { id: 4, name: 'Product 4', price: '$59.99', image: 'path-to-image-4.jpg' }
+    { fpId: 1, name: 'Product 1', price: '$29.99', image: 'path-to-image-1.jpg' ,type: 1},
+    { fpId: 2, name: 'Product 2', price: '$39.99', image: 'path-to-image-2.jpg' ,type: 1},
+    { fpId: 3, name: 'Product 3', price: '$49.99', image: 'path-to-image-3.jpg' ,type: 2},
+    { fpId: 4, name: 'Product 4', price: '$59.99', image: 'path-to-image-4.jpg' ,type: 3}
+  ]);
+
+  const normalProduct = ref([
+    {npId: 1, name: 'Product a',price: '$9.99', image: 'path-to-image-1.jpg' ,type: 1},
+    {npId: 2, name: 'Product b',price: '$209.99', image: 'path-to-image-1.jpg' ,type: 3}
   ]);
 
   const filteredProducts = computed(() => {
-  return featuredProducts.value.filter(product => {
-    return (selectedCategory.value === '' || product.category === selectedCategory.value) &&
-           parseFloat(product.price.replace('$', '')) <= priceRange.value;
-    });
+    //讀取過濾器，前往資料庫搜尋
   });
 
   const applyFilters = () => {
