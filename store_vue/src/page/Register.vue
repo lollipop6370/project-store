@@ -28,7 +28,7 @@
   import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router'
 
-  const router = useRouter()
+  const router = useRouter();
   const confirmPassword = ref('');
   const passwordStrength = ref('Weak');  // 密碼強度: weak, medium, strong
   

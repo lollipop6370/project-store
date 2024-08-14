@@ -18,7 +18,7 @@
 
       <!-- 右側登錄和圖標 -->
       <div class="nav-icons">
-        <router-link to="/register" class="login-link">Login / Register</router-link>
+        <router-link to="/login" class="login-link">Login / Register</router-link>
         <div class="icon">
           <i class="fas fa-search"></i>
         </div>
@@ -26,10 +26,12 @@
           <i class="fas fa-heart"></i>
           <span class="icon-count">2</span>
         </div>
-        <div class="icon cart-icon">
-          <i class="fas fa-shopping-cart"></i>
-          <span class="icon-count">2</span>
-        </div>
+        <router-link to="/cart" class="cart-link">
+          <div class="icon cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="icon-count">2</span>
+          </div>
+        </router-link>
       </div>
       
     </div>

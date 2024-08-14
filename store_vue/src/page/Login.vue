@@ -4,11 +4,11 @@
       <form @submit.prevent="loginUser">
         <div class="form-group">
           <label for="username">Username or Email</label>
-          <input type="text" id="username" v-model="usernameOrEmail" required />
+          <input type="text" id="username" v-model="user.username" required />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" required />
+          <input type="password" id="password" v-model="user.password" required />
         </div>
         <button type="submit" class="login-button">Login</button>
       </form>
@@ -17,20 +17,30 @@
   
   <script setup>
   import { ref } from 'vue';
+  import { useRouter } from 'vue-router'
+  import { userLogin } from '@/api';
+
+  const router = useRouter();
+
+  const user = ref({
+    username : "",
+    password : ""
+  });
   
-  const usernameOrEmail = ref('');
-  const password = ref('');
-  
-  const loginUser = () => {
-    // 模擬登入過程
+  const loginUser = async () => {
+    // 登入過程
     console.log('User logged in:', {
-      usernameOrEmail: usernameOrEmail.value,
-      password: password.value,
+      username: user.value.username,
+      password: user.value.password,
     });
+
+    let result = await userLogin(user);
+    let token = result.token;    //後續再做設計
   
     // 清空表單
-    usernameOrEmail.value = '';
-    password.value = '';
+    user.value.username = '';
+    user.value.password = '';
+    router.push({ name: "home" });
   };
   </script>
   

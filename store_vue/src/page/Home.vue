@@ -74,9 +74,9 @@
 
         <!-- 分頁導航 -->
         <div class="pagination">
-          <button @click="previousPage" :disabled="currentPage === 1">Previous</button>
-          <span>Page {{ currentPage }} of {{ totalPages }}</span>
-          <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+          <button @click="previousPage" :disabled="pageInfo.currentPage === 1">Previous</button>
+          <span>Page {{ pageInfo.currentPage }} of {{ totalPages }}</span>
+          <button @click="nextPage" :disabled="pageInfo.currentPage === totalPages">Next</button>
         </div>
       </section>
     </section>
@@ -85,15 +85,19 @@
   </template>
   
   <script setup>
-  import { ref , computed } from 'vue';
-
+  import { ref , computed , onMounted} from 'vue';
+  import { getProductCount, getNMProduct } from "../api/index"
   const priceRange = ref(100);
 
   const selectedTypes = ref([]);  // 追蹤選中的商品類型
   const productTypes = ref(['Electronics', 'Fashion', 'Home', 'Beauty', 'Toys']); // 商品類型選項
 
-  const currentPage = ref(1);  // 當前頁碼
-  const itemsPerPage = ref(6);  // 每頁顯示的產品數量
+  const pageInfo = ref(
+    {
+        currentPage : 1,
+        pageSize : 8
+    }
+  );
 
   // 假設我們有一個 featuredProducts 的數據源
   const featuredProducts = ref([
@@ -109,28 +113,41 @@
   ]);
 
 
-  const paginatedProducts = computed(() => {
-});
+  const paginatedProducts = async () => { //從後端取出 normal product 列表
+    let result = await getNMProduct(pageInfo.value);
+    normalProduct.value = result.pageInfo.pageData;
+  };
 
-const totalPages = computed(() => {
-  
-});
+  const totalProduct = async () => {
+    return await getProductCount(); //從後端取出總商品數量
+  };
+
+  const totalPages = computed(() => {
+    return totalProduct / pageInfo.value.pageSize;
+  });
 
 const previousPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--;
+  if (pageInfo.value.currentPage > 1) {
+    pageInfo.value.currentPage--;
+    paginatedProducts();
   }
 };
 
 const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
+  if (pageInfo.value.currentPage < totalPages.value) {
+    pageInfo.value.currentPage++;
+    paginatedProducts();
   }
 };
 
   const applyFilters = () => {
     // Apply filters logic (already handled by computed property)
   };
+
+  // 組件掛載時調用(生命週期)
+  onMounted(() => {
+    paginatedProducts();
+  })
   </script>
   
 <style scoped>
