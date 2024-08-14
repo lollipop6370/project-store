@@ -86,6 +86,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.5s ease;
   }
   
   .login-button:hover {

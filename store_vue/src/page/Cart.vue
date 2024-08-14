@@ -44,7 +44,9 @@
   <script setup>
   import { ref , onMounted } from 'vue';
   import { getUserCart } from '@/api';
-  
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter();
   const cartItems = ref([
     {
       image: 'path-to-image1.jpg',
@@ -96,8 +98,8 @@
   };
   
   const checkout = () => {
-    alert('Proceeding to checkout...');
     // 這裡可以添加結帳邏輯
+    router.push({ name:"order" });
   };
   </script>
   
@@ -143,7 +145,16 @@
     gap: 10px; /* 調整按鈕與數量之間的間距 */
   }
   
+  .quantity-control span {
+    margin: 0 10px;
+  }
+  
   .quantity-control button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.3s ease;
     width: 30px;
     height: 30px;
     border: 1px solid #eaeaea;
@@ -151,18 +162,7 @@
     cursor: pointer;
   }
   
-  .quantity-control span {
-    margin: 0 10px;
-  }
-  
-  button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-  }
-  
-  button:hover {
+  .quantity-control button:hover {
     color: red;
   }
   
@@ -180,7 +180,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    transition: color 0.5s ease;
+    transition: background-color 0.5s ease;
   }
   
   .checkout-button:hover {
