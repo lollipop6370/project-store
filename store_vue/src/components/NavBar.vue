@@ -18,7 +18,7 @@
 
       <!-- 右側登錄和圖標 -->
       <div class="nav-icons">
-        <a href="/login" class="login-link">Login / Register</a>
+        <router-link to="/register" class="login-link">Login / Register</router-link>
         <div class="icon">
           <i class="fas fa-search"></i>
         </div>
