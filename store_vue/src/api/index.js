@@ -12,4 +12,7 @@ export const getNMProduct = (info) => {
 export const userLogin = (user) => {
   return request.post("user/login",user);
 };
-
+/* 取得用戶購物車項物 */
+export const getUserCart = (user) => {
+  return request.post("user/cart",user);
+};
