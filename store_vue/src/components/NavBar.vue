@@ -18,7 +18,13 @@
 
       <!-- 右側登錄和圖標 -->
       <div class="nav-icons">
-        <router-link to="/login" class="login-link">Login / Register</router-link>
+        <div v-if="uislogin">
+
+        </div>
+        <div v-else>
+          <router-link to="/login" class="login-link">Login / </router-link>
+          <router-link to="/register" class="login-link">Register</router-link>
+        </div>
         <div class="icon">
           <i class="fas fa-search"></i>
         </div>
@@ -39,7 +45,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref , onUpdated } from 'vue';
+import { useUserStore } from '@/stores/userStore';
+const userStore = useUserStore();
+const uislogin = ref(false);
+
+onUpdated(() => {
+  uislogin.value = userStore.getUserStoreLogin;
+})
 
 </script>
 

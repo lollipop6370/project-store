@@ -27,6 +27,7 @@
   <script setup>
   import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router'
+  import { userRegister , checkUsername } from '@/api';
 
   const router = useRouter();
   const confirmPassword = ref('');
@@ -56,14 +57,22 @@
   }
   };
 
-  const registerUser = () => {
+  const registerUser = async () => {
+    //確認username有無被占用
+    let result1 = await checkUsername(regist.value.username);
+    if(result1.data === true){
+      alert('username is exist!');
+      return;
+    }
+    //確認密碼有無打錯
     if (regist.value.password !== confirmPassword.value) {
       alert('Passwords do not match!');
       return;
     }
   
-    // 註冊過程  
-    
+    // 註冊過程 
+    console.log("register:" + regist.value); 
+    let result2 = await userRegister(regist.value);
   
     // 清空表單
     regist.value.username = '';

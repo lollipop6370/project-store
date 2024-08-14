@@ -65,7 +65,7 @@
       <section class="filtered-products">
         <h2>Filtered Products</h2>
         <div class="products-grid">
-          <div class="product-card" v-for="product in normalProduct" :key="product.id">
+          <div class="product-card" v-for="product in normalProduct" :key="product.ppid">
             <img :src="product.image" :alt="product.name" />
             <h3>{{ product.name }}</h3>
             <p>{{ product.price }}</p>
@@ -108,14 +108,14 @@
   ]);
 
   const normalProduct = ref([
-    {npId: 1, name: 'Product a',price: '$9.99', image: 'path-to-image-1.jpg' ,type: 1},
-    {npId: 2, name: 'Product b',price: '$209.99', image: 'path-to-image-1.jpg' ,type: 3}
+    {id: 1, name: 'Product a',price: '$9.99', image: 'path-to-image-1.jpg' ,type: 1},
+    {id: 2, name: 'Product b',price: '$209.99', image: 'path-to-image-1.jpg' ,type: 3}
   ]);
 
 
   const paginatedProducts = async () => { //從後端取出 normal product 列表
     let result = await getNMProduct(pageInfo.value);
-    normalProduct.value = result.pageInfo.pageData;
+    normalProduct.value = result.data;
   };
 
   const totalProduct = async () => {

@@ -18,7 +18,7 @@
   <script setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router'
-  import { userLogin } from '@/api';
+  import { useUserStore } from '@/stores/userStore';
 
   const router = useRouter();
 
@@ -33,14 +33,18 @@
       username: user.value.username,
       password: user.value.password,
     });
+    try{
+      let userStore = useUserStore();
+      let result = await userStore.userStoreLogin(user.value);
+      
+      // 清空表單
+      user.value.username = '';
+      user.value.password = '';
+      router.push({ name: "home" });
+    }finally{
 
-    let result = await userLogin(user);
-    let token = result.token;    //後續再做設計
-  
-    // 清空表單
-    user.value.username = '';
-    user.value.password = '';
-    router.push({ name: "home" });
+    }
+    
   };
   </script>
   

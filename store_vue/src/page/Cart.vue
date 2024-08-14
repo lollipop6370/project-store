@@ -28,7 +28,7 @@
             </td>
             <td>{{ item.price * item.quantity | currency }}</td>
             <td>
-              <button @click="removeItem(index)">🗑️</button>
+              <button @click="removeItem(item)">🗑️</button>
             </td>
           </tr>
         </tbody>
@@ -43,58 +43,48 @@
   
   <script setup>
   import { ref , onMounted } from 'vue';
-  import { getUserCart } from '@/api';
   import { useRouter } from 'vue-router'
+  import { useCartStore } from '@/stores/cartStore';
+  import { onUpdated } from 'vue';
 
+  const cartStore = useCartStore();
   const router = useRouter();
-  const cartItems = ref([
-    {
-      image: 'path-to-image1.jpg',
-      name: 'T Shirt For Men',
-      price: 130.0,
-      quantity: 1,
-    },
-    {
-      image: 'path-to-image2.jpg',
-      name: 'Red Scarf For Women',
-      price: 120.5,
-      quantity: 1,
-    },
-  ]);
+  const cartItems = ref();
   
   onMounted(()=>{
-    //checkCart();
+    checkCart();
   });
 
+  onUpdated(() => {
+    checkCart();
+  });
   const checkCart = async () => {
-    //先取得用戶資訊
-    let user;
-    //後端搜尋該用戶購物車
-    let result = await getUserCart(user);
-    cartItems = result.data;
+    //store中的購物車
+    cartItems.value = cartStore.cartStoreTotalItems;
+    console.log(cartItems.value)
   }
 
-  const decreaseQuantity = (item,index) => {
+  const decreaseQuantity = async (item,index) => {
     if (item.quantity > 1) {
-      item.quantity--;
-      //後端資料庫刪除數量
+      await cartStore.cartStoredecrease(item.id);
+      //store刪除數量
+      
     }else{
-      cartItems.value.splice(index, 1);
-      //後端資料庫刪除項目
+      //store刪除項目
+      await cartStore.cartStoreRemoveItem(item.id);
     }
-
+    checkCart();
   };
   
-  const increaseQuantity = (item) => {
-    item.quantity++;
-
+  const increaseQuantity = async (item) => {
+    await cartStore.cartStoreAddItem(item);
     //後端資料庫新增數量
   };
   
-  const removeItem = (index) => {
+  const removeItem = async (item) => {
     //後端資料庫刪除該購買項目
-
-    cartItems.value.splice(index, 1);
+    await cartStore.cartStoreRemoveItem(item.id);
+    checkCart();
   };
   
   const checkout = () => {

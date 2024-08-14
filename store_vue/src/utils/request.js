@@ -1,5 +1,6 @@
 import axios from "axios";
 //import NProgress from "nprogress";
+import { useUserStore } from '../stores/userStore';
 
 // 配置一個axios實例
 const service = axios.create({
@@ -11,12 +12,13 @@ const service = axios.create({
 service.interceptors.request.use((config) => {
     //NProgress.start()//開啟進度條
     // 如果有token，通過請求頭傳給後端
-    /*const userInfoStore = useUserInfoStore(pinia) 
-    const token = userInfoStore.token
+    const userStore = useUserStore();
+    const token = userStore.getUserStoreToken;
+    console.log("Token:" + token);
        if (token) {
         // config.headers['token'] = token  // 錯誤: header中沒有聲明叫'token'的key
-        (config.headers)['token'] = token
-      }*/
+        (config.headers)['token'] = token;
+      }
     return config;
 });
 
