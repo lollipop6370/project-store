@@ -46,9 +46,25 @@ export const getUserCart = (uid) => {
 };
 /**
  * 更新後端購物車清單
- * -> items[]:{ id:int , quantity:int }
+ * -> items:{ id:int , quantity:int }
  * <- null
  */
 export const updateBackendCart = (items) => {
-  return request.post("user/cart/newList",items);
+  return request.post("user/cart/updateList",items);
 };
+/**
+ * 新增購物車清單
+ * -> items:{id:int , quantity:int}
+ * <- null
+ */
+export const newBackendCart = (items) => {
+  return request.post("user/cart/newItem",items);
+};
+/**
+ * 刪除購物車商品
+ * -> items:{id:int}
+ * <- null
+ */
+export const deleteBackendCart = (itemsId) => {
+  return request.post("user/cart/deleteItem",itemsId);
+}

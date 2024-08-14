@@ -77,7 +77,7 @@
   };
   
   const increaseQuantity = async (item) => {
-    await cartStore.cartStoreAddItem(item);
+    await cartStore.cartUpdateItems(item.id);
     //後端資料庫新增數量
   };
   

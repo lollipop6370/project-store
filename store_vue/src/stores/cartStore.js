@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getUserCart , updateBackendCart } from '@/api';
+import { getUserCart , updateBackendCart , newBackendCart , deleteBackendCart } from '@/api';
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
@@ -35,25 +35,31 @@ export const useCartStore = defineStore('cart', {
       const existingItem = this.items.find(i => i.id === item.id);
       if (existingItem) {
         existingItem.quantity += 1;
+        //await updateBackendCart(this.items);
       } else {
         this.items.push({ ...item, quantity: 1 });///////須改
+        //await newBackendCart(item);
       }
-      await updateBackendCart(this.items);
     },
     async cartStoreRemoveItem(itemId) {
       this.items = this.items.filter(item => item.id !== itemId);
-      await updateBackendCart(this.items);
+      //await deleteBackendCart(itemId);
     },
     async cartStoreClearCart() {
       this.items = [];
-      await updateBackendCart(this.items);
+      //await updateBackendCart(this.items);
     },
     async cartStoredecrease(itemId){
       const item = this.items.find(item => item.id == itemId);
-      if (item && item.quantity > 0) {
+      if (item && item.quantity > 1) {
         item.quantity -= 1;
-        await updateBackendCart(this.items);
+        //await updateBackendCart(this.items);
       }
+    },
+    async cartUpdateItems(itemId){
+      const item = this.items.find(item => item.id == itemId);
+      item.quantity += 1;
+      //await updateBackendCart(this.items);
     },
     async cartStoreReload(uid){
       let result = await getUserCart(uid);   //去後端重新載入購物車
