@@ -117,7 +117,7 @@
 
   const paginatedProducts = async () => { //從後端取出並更新 normal product 列表
     let result = await getNMProduct(pageInfo.value);
-    normalProduct.value = result.data;
+    normalProduct.value = result;
   };
 
   const totalProduct = async () => {
