@@ -133,6 +133,8 @@ onUpdated(() => {
 
 .cart-icon {
   background-color: #f5f5f5;
+  background-image: url('@/components/icons/cart.png');
+  background-size: cover; /* 確保圖標不變形 */
   border-radius: 50%;
   padding: 10px;
 }
