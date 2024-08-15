@@ -1,7 +1,8 @@
 <template>
     <div class="home">
       <!-- 英雄區域 -->
-      <section class="hero">
+      <section class="hero" ref="heroSection">
+
         <div class="hero-content">
           <h1>Welcome to PUIK Store</h1>
           <p>Your one-stop shop for all your needs</p>
@@ -153,10 +154,10 @@ const nextPage = () => {
 <style scoped>
   /* 英雄區域的樣式 */
   .hero {
-    background-image: url('path-to-hero-image.jpg');
+    background-image: url('@/components/slider/slider-1.jpg');
     background-size: cover;
     background-position: center;
-    height: 400px;
+    height: 950px;
     display: flex;
     justify-content: center;
     align-items: center;
