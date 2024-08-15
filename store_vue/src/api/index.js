@@ -6,14 +6,14 @@ import request from "../utils/request/"
 送回前端<- {totalProduct:int}
 */
 export const getProductCount = () => {
-  return request.get("shop/productCount");
+  return request.get("home/productCount");
 };
 /* 查詢所有normal商品  
 -> info:{ currentPage:int , pageSize:int } 
 <- {id:int,name:String,price:double,image:String,type:int}
 */
 export const getNMProduct = (info) => {
-  return request.post("shop/nmProductByPage",info);
+  return request.post("home/nmProductByPage",info);
 };
 /* 註冊 
 -> user:{username:String , email:String , password:String} 

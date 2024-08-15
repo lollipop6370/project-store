@@ -91,7 +91,9 @@
 
   const selectedTypes = ref([]);  // 追蹤選中的商品類型
   const productTypes = ref(['Electronics', 'Fashion', 'Home', 'Beauty', 'Toys']); // 商品類型選項
-
+  const totalProduct_c = ref(0);
+  const totalPages = ref(0);
+  
   const pageInfo = ref(
     {
         currentPage : 1,
@@ -108,7 +110,7 @@
   ]);
 
   const normalProduct = ref([
-    {id: 1, name: 'Product a',price: '$9.99', image: 'path-to-image-1.jpg' ,type: 1},
+    {id: 1, name: 'Product a',price: '$9.99', image: '111' ,type: 1},
     {id: 2, name: 'Product b',price: '$209.99', image: 'path-to-image-1.jpg' ,type: 3}
   ]);
 
@@ -119,12 +121,9 @@
   };
 
   const totalProduct = async () => {
-    return await getProductCount(); //從後端取出總商品數量
+    totalProduct_c.value = await getProductCount(); //從後端取出總商品數量
+    totalPages.value = 1 + Math.floor(totalProduct_c.value / pageInfo.value.pageSize);
   };
-
-  const totalPages = computed(() => {
-    return totalProduct / pageInfo.value.pageSize;
-  });
 
 const previousPage = () => {
   if (pageInfo.value.currentPage > 1) {
@@ -147,6 +146,7 @@ const nextPage = () => {
   // 組件掛載時調用(生命週期)
   onMounted(() => {
     paginatedProducts();
+    totalProduct();
   })
   </script>
   
