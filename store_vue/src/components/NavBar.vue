@@ -59,15 +59,22 @@ onUpdated(() => {
 <style scoped>
 .navbar {
   background-color: white;
-  padding: 10px 50px;
+  padding: 10px 40px;
   border-bottom: 1px solid #eaeaea;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加陰影，使NavBar更突出 */
 }
 
 .container {
   display: flex;
+  max-width: 1800px;
   justify-content: space-between;
   align-items: center;
   width: 100%;
