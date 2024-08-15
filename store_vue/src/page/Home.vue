@@ -93,7 +93,7 @@
   const productTypes = ref(['Electronics', 'Fashion', 'Home', 'Beauty', 'Toys']); // 商品類型選項
   const totalProduct_c = ref(0);
   const totalPages = ref(0);
-  
+
   const pageInfo = ref(
     {
         currentPage : 1,
@@ -115,14 +115,14 @@
   ]);
 
 
-  const paginatedProducts = async () => { //從後端取出 normal product 列表
+  const paginatedProducts = async () => { //從後端取出並更新 normal product 列表
     let result = await getNMProduct(pageInfo.value);
     normalProduct.value = result.data;
   };
 
   const totalProduct = async () => {
     totalProduct_c.value = await getProductCount(); //從後端取出總商品數量
-    totalPages.value = 1 + Math.floor(totalProduct_c.value / pageInfo.value.pageSize);
+    totalPages.value = Math.ceil(totalProduct_c.value / pageInfo.value.pageSize);//總數量除每頁數量，並無條件進位，即總頁數
   };
 
 const previousPage = () => {
