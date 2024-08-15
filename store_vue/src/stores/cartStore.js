@@ -33,11 +33,12 @@ export const useCartStore = defineStore('cart', {
   actions: {
     async cartStoreAddItem(item) {
       const existingItem = this.items.find(i => i.id === item.id);
-      if (existingItem) {
+      if (existingItem) {  //購物車已有該商品
         existingItem.quantity += 1;
         //await updateBackendCart(this.items);
-      } else {
-        this.items.push({ ...item, quantity: 1 });///////須改
+      } else {  //購物車沒有該商品
+        item.quantity = 1;
+        this.items.push(item);
         //await newBackendCart(item);
       }
     },
