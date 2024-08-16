@@ -68,3 +68,11 @@ export const newBackendCart = (items) => {
 export const deleteBackendCart = (itemsId) => {
   return request.post("user/cart/deleteItem",itemsId);
 }
+/**
+ * 查詢商品詳情
+ * -> id:int
+ * <- {id:int,name:String,price:double,image:String,type:int}
+ */
+export const loadProductDetail = (itemId) => {
+  return request.get("home/nmProductByPage/detail",itemId);
+}

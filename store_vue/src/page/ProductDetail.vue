@@ -62,7 +62,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref , onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { loadProductDetail } from '@/api';
+const route = useRoute();
 const product = ref({
   image: 'https://drive.google.com/thumbnail?id=1bXtZBDnDkMZVHV28rxAvDzIRuEdEvL9e', 
   name: 'Simple Stylish Women Backpack',
@@ -91,7 +94,13 @@ const addToCart = () => {
 const addToCompare = () => {
   // 添加到比較列表邏輯
 };
-//const a = this.$route.query.query;
+onMounted(() => {
+  loadDetail();
+});
+const loadDetail = async () =>{
+  let itemId = route.query.id;
+  product.value = await loadProductDetail(itemId);
+}
 </script>
 
 <style scoped>
