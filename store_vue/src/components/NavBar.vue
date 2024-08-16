@@ -19,7 +19,7 @@
       <!-- 右側登錄和圖標 -->
       <div class="nav-icons">
         <div v-if="uislogin">
-
+          歡迎 {{username}}
         </div>
         <div v-else>
           <router-link to="/login" class="login-link">Login / </router-link>
@@ -48,10 +48,10 @@
 import { ref , onUpdated } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 const userStore = useUserStore();
-const uislogin = ref(false);
+const uislogin = ref(userStore.getUserStoreLogin);
+const username = ref(userStore.getUsername);
 
 onUpdated(() => {
-  uislogin.value = userStore.getUserStoreLogin;
 })
 
 </script>

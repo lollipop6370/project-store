@@ -29,12 +29,9 @@
   
   const loginUser = async () => {
     // 登入過程
-    console.log('User logged in:', {
-      username: user.value.username,
-      password: user.value.password,
-    });
     try{
       let userStore = useUserStore();
+      console.log('User logged in:' + user);
       let result = await userStore.userStoreLogin(user.value);
       
       // 清空表單

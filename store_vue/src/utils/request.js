@@ -1,6 +1,7 @@
 import axios from "axios";
 import NProgress from "nprogress";
 import { useUserStore } from '../stores/userStore';
+import { ElMessage } from 'element-plus';
 
 // 配置一個axios實例
 const service = axios.create({
@@ -19,6 +20,7 @@ service.interceptors.request.use((config) => {
         // config.headers['token'] = token  // 錯誤: header中沒有聲明叫'token'的key
         (config.headers)['token'] = token;
       }
+      console.log("Token:" + token);
     return config;
 });
 
@@ -29,10 +31,10 @@ service.interceptors.response.use(
   
       if(response.data.code !== 200){
         // 判斷回傳狀態碼
-        if (response.data.code == 501)  return  Promise.reject(ElMessage.error("username錯誤"))
-        else if (response.data.code == 503) return  Promise.reject(ElMessage.error("密碼錯誤"))
-        else if (response.data.code == 504) return  Promise.reject(ElMessage.error("登入已過期"))
-        else if (response.data.code == 505) return  Promise.reject(ElMessage.error("用戶名已被使用"))
+        if (response.data.code == 501)  return  alert("username錯誤!")
+        else if (response.data.code == 503) return  alert("密碼錯誤")
+        else if (response.data.code == 504) return  alert("登入已過期")
+        else if (response.data.code == 505) return  alert("用戶名已被使用")
       } else {
         console.log(response.data);
         return response.data.data; // 200:成功 ，返回數據

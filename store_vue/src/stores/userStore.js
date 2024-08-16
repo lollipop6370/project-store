@@ -17,6 +17,9 @@ export const useUserStore = defineStore('user', {
       getUserStoreToken: (state) => {
         return getToken();
       },
+      getUsername: (state) => {
+        return state.userInfo.username;
+      },
     },
     actions: {
       async userStoreLogin(user) {
