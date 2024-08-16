@@ -19,7 +19,10 @@
       <!-- 右側登錄和圖標 -->
       <div class="nav-icons">
         <div v-if="uislogin">
-          歡迎 {{username}}
+          歡迎 {{username}} 
+          <div class="icon logout-icon">
+            <i class="fas logout-icon-i"></i>
+          </div>
         </div>
         <div v-else>
           <router-link to="/login" class="login-link">Login / </router-link>

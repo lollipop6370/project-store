@@ -67,9 +67,11 @@
         <h2>Filtered Products</h2>
         <div class="products-grid">
           <div class="product-card" v-for="product in normalProduct" :key="product.ppid">
-            <img :src="product.image" :alt="product.name" />
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.price }}</p>
+            <div class="can-click" @click="productClick(product.id)">
+              <img :src="product.image" :alt="product.name" />
+              <h3>{{ product.name }}</h3>
+              <p>價格 : {{ product.price }}</p>
+            </div>
           </div>
         </div>
 
@@ -86,8 +88,10 @@
   </template>
   
   <script setup>
-  import { ref , computed , onMounted} from 'vue';
+  import { ref , onMounted} from 'vue';
   import { getProductCount, getNMProduct } from "../api/index"
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
   const priceRange = ref(100);
 
   const selectedTypes = ref([]);  // 追蹤選中的商品類型
@@ -143,7 +147,9 @@ const nextPage = () => {
   const applyFilters = () => {
     // Apply filters logic (already handled by computed property)
   };
-
+const productClick = (id) =>{ //當商品被點擊時，路由至商品詳情並傳是哪個塗片傳的參數
+  router.push({ name:"productDetail" , query : { id:id }});
+}
   // 組件掛載時調用(生命週期)
   onMounted(() => {
     paginatedProducts();
@@ -287,6 +293,10 @@ const nextPage = () => {
 .pagination span {
   padding: 10px 20px;
   line-height: 20px;
+}
+
+.can-click{
+  cursor: pointer;
 }
 </style>
   

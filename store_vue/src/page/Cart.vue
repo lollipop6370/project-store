@@ -43,7 +43,7 @@
   
   <script setup>
   import { ref , onMounted } from 'vue';
-  import { useRouter } from 'vue-router'
+  import { useRouter } from 'vue-router';
   import { useCartStore } from '@/stores/cartStore';
   import { onUpdated } from 'vue';
 
