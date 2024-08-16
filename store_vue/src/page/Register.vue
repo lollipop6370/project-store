@@ -33,9 +33,9 @@
   const confirmPassword = ref('');
   const passwordStrength = ref('Weak');  // 密碼強度: weak, medium, strong
   
-  const regist = ref([
+  const regist = ref(
     {username : "阿鵝", email : "1111@gmail.com", password : "123456"}
-  ]);
+  );
 
   const checkPasswordStrength = () => {
     const strengthCriteria = [
@@ -58,7 +58,7 @@
   };
 
   const registerUser = async () => {
-    //確認username有無被占用
+    //確認username有無被占用   
     let result1 = await checkUsername(regist.value.username);
     if(result1.data === true){
       alert('username is exist!');
