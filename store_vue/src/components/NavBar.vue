@@ -45,11 +45,11 @@
 </template>
 
 <script setup>
-import { ref , onUpdated } from 'vue';
+import { ref , onUpdated , computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 const userStore = useUserStore();
-const uislogin = ref(userStore.getUserStoreLogin);
-const username = ref(userStore.getUsername);
+const uislogin = computed(() => userStore.getUserStoreLogin);
+const username = computed(() => userStore.getUsername);
 
 onUpdated(() => {
 })
