@@ -25,13 +25,13 @@
   </template>
   
   <script setup>
-  import { ref, computed } from 'vue';
+  import { ref } from 'vue';
   import { useRouter } from 'vue-router'
   import { userRegister , checkUsername } from '@/api';
 
   const router = useRouter();
   const confirmPassword = ref('');
-  const passwordStrength = ref('Weak');  // 密碼強度: weak, medium, strong
+  const passwordStrength = ref('weak');  // 密碼強度: weak, medium, strong
   
   const regist = ref(
     {username : "阿鵝", email : "1111@gmail.com", password : "123456"}
@@ -49,18 +49,18 @@
   const strength = strengthCriteria.reduce((acc, curr) => acc + curr, 0);
 
   if (strength <= 2) {
-    passwordStrength.value = 'Weak';
+    passwordStrength.value = 'weak';
   } else if (strength === 3 || strength === 4) {
-    passwordStrength.value = 'Medium';
+    passwordStrength.value = 'medium';
   } else if (strength === 5) {
-    passwordStrength.value = 'Strong';
+    passwordStrength.value = 'strong';
   }
   };
 
   const registerUser = async () => {
     //確認username有無被占用   
     let result1 = await checkUsername(regist.value.username);
-    if(result1.data === true){
+    if(Boolean(result1) === true){
       alert('username is exist!');
       return;
     }
@@ -72,11 +72,11 @@
   
     // 註冊過程 
     console.log("register:" + regist.value); 
-    let result2 = await userRegister(regist.value);
+    await userRegister(regist.value);
   
     // 清空表單
     regist.value.username = '';
-    regist.email = '';
+    regist.value.email = '';
     regist.value.password = '';
     confirmPassword.value = '';
 

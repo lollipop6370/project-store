@@ -28,7 +28,7 @@ export const userRegister = (user) => {
  * <- {Boolean}
  */
 export const checkUsername = (username) => {
-  return request.get("user/register/username",username);
+  return request.get("user/register/username",{params:{username:username}});
 }
 /* 登入 
 -> user:{username:String , password:String} 
@@ -73,6 +73,7 @@ export const deleteBackendCart = (itemsId) => {
  * -> id:int
  * <- {id:int,name:String,price:double,image:String,type:int}
  */
-export const loadProductDetail = (itemId) => {
-  return request.get("home/nmProductByPage/detail",itemId);
+export const loadProductDetail = (id) => {
+  console.log(id)
+  return request.get("home/nmProductByPage/detail",{ params:{id:id} });
 }

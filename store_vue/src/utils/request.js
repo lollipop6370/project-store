@@ -1,7 +1,6 @@
 import axios from "axios";
 import NProgress from "nprogress";
 import { useUserStore } from '../stores/userStore';
-import { ElMessage } from 'element-plus';
 
 // 配置一個axios實例
 const service = axios.create({
