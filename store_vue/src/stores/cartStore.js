@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useUserStore } from './userStore';
 import { getUserCart , updateBackendCart , newBackendCart , deleteBackendCart } from '@/api';
 
 export const useCartStore = defineStore('cart', {
@@ -17,7 +18,7 @@ export const useCartStore = defineStore('cart', {
       price: 120.5,
       quantity: 1,
     }],
-    itemsCount: 0,
+    itemsCount: 2,
   }),
   getters: {
     cartStoreTotalPrice: (state) => {  //購物車所有商品價格總和
@@ -31,14 +32,22 @@ export const useCartStore = defineStore('cart', {
     },
   },
   actions: {
-    async cartStoreAddItem(item) {
-      const existingItem = this.items.find(i => i.id === item.id);
+    async cartStoreAddItem(itemId) {
+      const existingItem = this.items.find(i => i.id === itemId);
+      //console.log("測試點5");
+      //console.log(this.items);
       if (existingItem) {  //購物車已有該商品
+        //console.log("測試點4");
         existingItem.quantity += 1;
-        //await updateBackendCart(this.items);
+        //console.log("測試點1:");
+        //console.log(existingItem.id,existingItem.quantity);
+        await updateBackendCart(existingItem.id,existingItem.quantity);
+        //console.log("測試點2");
+        //    console.log(existingItem.id,existingItem.quantity);
       } else {  //購物車沒有該商品
-        item.quantity = 1;
-        this.items.push(item);
+        //console.log("測試點3");
+        this.itemsCount += 1;  //購物車新品+1
+        
         //await newBackendCart(item);
       }
     },
@@ -47,8 +56,9 @@ export const useCartStore = defineStore('cart', {
       //await deleteBackendCart(itemId);
     },
     async cartStoreClearCart() {
-      this.items = [];
       //await updateBackendCart(this.items);
+      this.items = [];
+      this.itemsCount = 0;
     },
     async cartStoredecrease(itemId){
       const item = this.items.find(item => item.id == itemId);
@@ -57,14 +67,21 @@ export const useCartStore = defineStore('cart', {
         //await updateBackendCart(this.items);
       }
     },
-    async cartUpdateItems(itemId){
+    async cartUpdateItems(itemId){////////////////////////////////////////
       const item = this.items.find(item => item.id == itemId);
       item.quantity += 1;
       //await updateBackendCart(this.items);
     },
-    async cartStoreReload(uid){
+    async cartStoreReload(){
+      let userStore = useUserStore();
+      let uid = userStore.getUserId;
+      //console.log("reload1");
+      //console.log(uid);
       let result = await getUserCart(uid);   //去後端重新載入購物車
-      this.items = result.data;
+      //console.log("reload2");
+      //console.log(result);
+      this.itemsCount = result.length;
+      this.items = result;
     },
   },
 });

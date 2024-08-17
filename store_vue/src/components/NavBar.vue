@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref , onUpdated , computed } from 'vue';
+import { onUpdated , computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 const userStore = useUserStore();
 const uislogin = computed(() => userStore.getUserStoreLogin);

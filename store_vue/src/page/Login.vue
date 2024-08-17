@@ -31,8 +31,8 @@
     // 登入過程
     try{
       let userStore = useUserStore();
-      console.log('User logged in:' + user);
-      let result = await userStore.userStoreLogin(user.value);
+      console.log('User logged in:' + user.value);
+      await userStore.userStoreLogin(user.value);
       
       // 清空表單
       user.value.username = '';

@@ -65,6 +65,8 @@
 import { ref , onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { loadProductDetail } from '@/api';
+import { useCartStore } from '@/stores/cartStore';
+const cartStore = useCartStore();
 const route = useRoute();
 const product = ref({
   image: 'https://drive.google.com/thumbnail?id=1bXtZBDnDkMZVHV28rxAvDzIRuEdEvL9e', 
@@ -77,6 +79,7 @@ const product = ref({
 });
 const selectedSize = ref('M'); // 預設選擇的尺寸
 const quantity = ref(1); // 預設選擇的數量
+const itemId = route.query.id;
 const decreaseQuantity = () => {
   if (quantity.value > 1) {
     quantity.value--;
@@ -88,8 +91,15 @@ const increaseQuantity = () => {
 const addToWishlist = () => {
   // 添加到願望清單邏輯
 };
-const addToCart = () => {
-  // 添加到購物車邏輯
+const addToCart = () => { // 添加到購物車邏輯
+  let item = {};
+  item.id = itemId;
+  item.image = product.value.image;
+  item.name = product.value.name;
+  item.price = product.value.price;
+  item.quantity = quantity;
+  cartStore.cartStoreAddItem(item);
+  alert("以添加進購物車");
 };
 const addToCompare = () => {
   // 添加到比較列表邏輯
@@ -98,7 +108,6 @@ onMounted(() => {
   loadDetail();
 });
 const loadDetail = async () =>{
-  let itemId = route.query.id;
   product.value = await loadProductDetail(itemId);
 }
 </script>

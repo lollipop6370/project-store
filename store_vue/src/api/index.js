@@ -42,15 +42,17 @@ export const userLogin = (user) => {
 <- {id:int , image:String , name:String , price:double , quantity:int}
 */
 export const getUserCart = (uid) => {
-  return request.get("user/cart",uid);
+  return request.get("cart",{params:{uid:uid}});
 };
 /**
- * 更新後端購物車清單
- * -> items:{ id:int , quantity:int }
+ * 更新後端購物車清單(現有物品數量 +1 or -1 or ...)
+ * -> id:int , quantity:int
  * <- null
  */
-export const updateBackendCart = (items) => {
-  return request.post("user/cart/updateList",items);
+export const updateBackendCart = (id,quantity) => {
+  console.log("RRRRRRRRRRRRRR");
+  console.log(id,quantity);
+  return request.get("cart/updateList",{params:{id:id,quantity:quantity}});
 };
 /**
  * 新增購物車清單
@@ -58,7 +60,7 @@ export const updateBackendCart = (items) => {
  * <- null
  */
 export const newBackendCart = (items) => {
-  return request.post("user/cart/newItem",items);
+  return request.post("cart/newItem",items);
 };
 /**
  * 刪除購物車商品
@@ -66,7 +68,7 @@ export const newBackendCart = (items) => {
  * <- null
  */
 export const deleteBackendCart = (itemsId) => {
-  return request.post("user/cart/deleteItem",itemsId);
+  return request.post("cart/deleteItem",itemsId);
 }
 /**
  * 查詢商品詳情
@@ -74,6 +76,21 @@ export const deleteBackendCart = (itemsId) => {
  * <- {id:int,name:String,price:double,image:String,type:int}
  */
 export const loadProductDetail = (id) => {
-  console.log(id)
   return request.get("home/nmProductByPage/detail",{ params:{id:id} });
+}
+/**
+ * 用token查uid
+ * -> token:String (放header就好)
+ * <- {uid:int}
+ */
+export const findUId = () => {
+  return request.get("user/uid");
+}
+/**
+ * 檢查是否登入
+ * -> token:String (head)
+ * <- {isLogin:Boolean}
+ */
+export const checkLogin = () => {
+  return request.get("user/checkLogin");
 }

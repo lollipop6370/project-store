@@ -91,6 +91,10 @@
   import { ref , onMounted} from 'vue';
   import { getProductCount, getNMProduct } from "../api/index"
   import { useRouter } from 'vue-router';
+  import { useUserStore } from '@/stores/userStore';
+  import { useCartStore } from '@/stores/cartStore';
+  const userStore = useUserStore();
+  const cartStore = useCartStore();
   const router = useRouter();
   const priceRange = ref(100);
 
@@ -154,6 +158,9 @@ const productClick = (id) =>{ //當商品被點擊時，路由至商品詳情並
   onMounted(() => {
     paginatedProducts();
     totalProduct();
+    if(userStore.getUserStoreLogin === true){   //如果用戶有登入
+      cartStore.cartStoreReload();
+    }
   })
   </script>
   

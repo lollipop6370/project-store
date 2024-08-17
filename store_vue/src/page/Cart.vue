@@ -42,26 +42,36 @@
   </template>
   
   <script setup>
-  import { ref , onMounted } from 'vue';
+  import { onMounted, computed } from 'vue';
   import { useRouter } from 'vue-router';
   import { useCartStore } from '@/stores/cartStore';
   import { onUpdated } from 'vue';
+  import { checkLogin } from '@/api';
 
   const cartStore = useCartStore();
   const router = useRouter();
-  const cartItems = ref();
+  const cartItems = computed(() => {
+    return cartStore.cartStoreTotalItems;
+  });
   
   onMounted(()=>{
     checkCart();
   });
 
   onUpdated(() => {
-    checkCart();
+    //checkCart();
   });
   const checkCart = async () => {
-    //store中的購物車
-    cartItems.value = cartStore.cartStoreTotalItems;
-    console.log(cartItems.value)
+    if(checkLogin()){
+      //store中的購物車
+      cartStore.cartStoreReload();
+      console.log("store中的購物車");
+      console.log(cartItems.value);
+    }
+    else{  //未登入，跳轉燈入
+      alert("not login!");
+      router.push({name:"login"});
+    }
   }
 
   const decreaseQuantity = async (item,index) => {
@@ -73,18 +83,18 @@
       //store刪除項目
       await cartStore.cartStoreRemoveItem(item.id);
     }
-    checkCart();
+    
   };
   
   const increaseQuantity = async (item) => {
-    await cartStore.cartUpdateItems(item.id);
+    await cartStore.cartStoreAddItem(item.id);
     //後端資料庫新增數量
   };
   
   const removeItem = async (item) => {
     //後端資料庫刪除該購買項目
     await cartStore.cartStoreRemoveItem(item.id);
-    checkCart();
+    
   };
   
   const checkout = () => {
