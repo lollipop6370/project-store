@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', {
         uid: 1,
         username: 'John Doe',
         isLoggedIn: false,
+        token:getToken(),
       },
     }),
     getters:{
@@ -15,7 +16,7 @@ export const useUserStore = defineStore('user', {
         return state.userInfo.isLoggedIn;
       },
       getUserStoreToken: (state) => {
-        return getToken();
+        return state.userInfo.token;
       },
       getUsername: (state) => {
         return state.userInfo.username;
@@ -27,16 +28,21 @@ export const useUserStore = defineStore('user', {
     actions: {
       async userStoreLogin(user) {
         let result = await userLogin(user);
-        this.userInfo.isLoggedIn = true;
-        let result2 = await findUId();
-        this.userInfo.uid = result2;
+        this.userInfo.token = result.token;
         setToken(result.token);
+        this.userInfo.isLoggedIn = true;
+        //console.log(result);
+        //let result2 = await findUId();
+        this.userInfo.uid = result.uid;
+        this.userInfo.username = result.username;
       },
-      userStoreLogout(){
+      async userStoreLogout(){
+        this.userInfo.isLoggedIn = false;
+        this.userInfo.username = "";
+        this.userInfo.uid = null;
+        this.userInfo.token = "";
         removeToken();
-        this.username = '';
-        this.uid = null;
-        this.isLoggedIn = false;
-      }
-    },
+        //alert("logout")
+      },
+    }
 });

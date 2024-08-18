@@ -32,7 +32,7 @@ export const checkUsername = (username) => {
 }
 /* 登入 
 -> user:{username:String , password:String} 
-<- {token:String}
+<- {token:String , uid:int}
 */
 export const userLogin = (user) => {
   return request.post("user/login",user);

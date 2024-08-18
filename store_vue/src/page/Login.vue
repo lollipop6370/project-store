@@ -21,7 +21,7 @@
   import { useUserStore } from '@/stores/userStore';
 
   const router = useRouter();
-
+  const userStore = useUserStore();
   const user = ref({
     username : "",
     password : ""
@@ -29,18 +29,16 @@
   
   const loginUser = async () => {
     // 登入過程
-    try{
-      let userStore = useUserStore();
-      console.log('User logged in:' + user.value);
+    
+      
       await userStore.userStoreLogin(user.value);
       
       // 清空表單
       user.value.username = '';
       user.value.password = '';
+      console.log(userStore.getUserStoreToken)
       router.push({ name: "home" });
-    }finally{
-
-    }
+    
     
   };
   </script>

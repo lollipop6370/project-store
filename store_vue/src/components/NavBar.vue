@@ -20,9 +20,6 @@
       <div class="nav-icons">
         <div v-if="uislogin">
           歡迎 {{username}} 
-          <div class="icon logout-icon">
-            <i class="fas logout-icon-i"></i>
-          </div>
         </div>
         <div v-else>
           <router-link to="/login" class="login-link">Login / </router-link>
@@ -31,9 +28,10 @@
         <div class="icon">
           <i class="fas fa-search"></i>
         </div>
-        <div class="icon">
-          <i class="fas fa-heart"></i>
-          <span class="icon-count">2</span>
+        <div class="icon" v-if="uislogin" @click="logoutClick()">
+          <div class="icon logout-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
         </div>
         <router-link to="/cart" class="cart-link">
           <div class="icon cart-icon">
@@ -54,7 +52,15 @@ const userStore = useUserStore();
 const uislogin = computed(() => userStore.getUserStoreLogin);
 const username = computed(() => userStore.getUsername);
 
+const logoutClick = async()=>{
+  await userStore.userStoreLogout();
+  console.log(userStore.isLoggedIn)
+  console.log(userStore.uid)
+  console.log(userStore.getUserStoreToken)
+};
+
 onUpdated(() => {
+  
 })
 
 </script>
@@ -140,5 +146,13 @@ onUpdated(() => {
   background-size: cover; /* 確保圖標不變形 */
   border-radius: 50%;
   padding: 10px;
+}
+.logout-icon {
+  background-color: #f5f5f5;
+  background-image: url('@/components/icons/logout.jpg');
+  background-size: cover; /* 確保圖標不變形 */
+  border-radius: 50%;
+  padding: 10px;
+  width: auto;
 }
 </style>

@@ -44,17 +44,20 @@
   <script setup>
   import { onMounted, computed } from 'vue';
   import { useRouter } from 'vue-router';
+  import { useUserStore } from '@/stores/userStore';
   import { useCartStore } from '@/stores/cartStore';
   import { onUpdated } from 'vue';
   import { checkLogin } from '@/api';
 
   const cartStore = useCartStore();
+  const userStore = useUserStore();
   const router = useRouter();
   const cartItems = computed(() => {
     return cartStore.cartStoreTotalItems;
   });
   
   onMounted(()=>{
+    
     checkCart();
   });
 
@@ -62,16 +65,16 @@
     //checkCart();
   });
   const checkCart = async () => {
-    if(checkLogin()){
+    //if(checkLogin()){
       //store中的購物車
       cartStore.cartStoreReload();
       console.log("store中的購物車");
-      console.log(cartItems.value);
-    }
-    else{  //未登入，跳轉燈入
-      alert("not login!");
-      router.push({name:"login"});
-    }
+      //console.log(cartItems.value);
+    //}
+    //else{  //未登入，跳轉燈入
+     // alert("not login!");
+     // router.push({name:"login"});
+    //}
   }
 
   const decreaseQuantity = async (item,index) => {
