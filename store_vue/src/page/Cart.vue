@@ -77,10 +77,10 @@
     //}
   }
 
-  const decreaseQuantity = async (item,index) => {
+  const decreaseQuantity = async (item) => {
     if (item.quantity > 1) {
       await cartStore.cartStoredecrease(item.id);
-      //store刪除數量
+      //store刪除數量 (-1)
       
     }else{
       //store刪除項目
@@ -90,8 +90,8 @@
   };
   
   const increaseQuantity = async (item) => {
-    await cartStore.cartStoreAddItem(item.id);
-    //後端資料庫新增數量
+    await cartStore.cartStoreAddItem(item.id,1);
+    //後端資料庫新增數量 +1
   };
   
   const removeItem = async (item) => {

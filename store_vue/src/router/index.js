@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../page/Home.vue';
+import { checkLogin } from '@/api';
 
 const routes = [
   {
@@ -53,6 +54,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
+});
+
+router.beforeEach(async (to, from) => {    //全局守衛
+  if (to.name === 'cart' | to.name === 'order'){   //檢查是否登入、token是否過期
+    if(await checkLogin()){
+      return true;
+    }
+    else{
+      alert("please login!")
+      return {name:"login"};
+    }
+  }
 });
 
 export default router;

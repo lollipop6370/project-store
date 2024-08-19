@@ -63,11 +63,14 @@
 
 <script setup>
 import { ref , onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { loadProductDetail } from '@/api';
+import { useRoute , useRouter } from 'vue-router';
+import { loadProductDetail , checkLogin } from '@/api';
 import { useCartStore } from '@/stores/cartStore';
+import { useUserStore } from '@/stores/userStore';
+const userStore = useUserStore();
 const cartStore = useCartStore();
 const route = useRoute();
+const router = useRouter();
 const product = ref({
   image: 'https://drive.google.com/thumbnail?id=1bXtZBDnDkMZVHV28rxAvDzIRuEdEvL9e', 
   name: 'Simple Stylish Women Backpack',
@@ -91,15 +94,20 @@ const increaseQuantity = () => {
 const addToWishlist = () => {
   // 添加到願望清單邏輯
 };
-const addToCart = () => { // 添加到購物車邏輯
-  let item = {};
-  item.id = itemId;
-  item.image = product.value.image;
-  item.name = product.value.name;
-  item.price = product.value.price;
-  item.quantity = quantity;
-  cartStore.cartStoreAddItem(item);
-  alert("以添加進購物車");
+const addToCart = async () => { // 添加到購物車邏輯
+  //驗證是否登入
+  if(userStore.getUserStoreLogin){
+    if(await checkLogin()){//驗證token是否過期
+      await cartStore.cartStoreAddItem(itemId,quantity.value);
+      alert("已添加進購物車");
+    }
+    else{//去登入
+      router.push({name:"login"});
+    }
+  }
+  else{//去登入
+    router.push({name:"login"});
+  }
 };
 const addToCompare = () => {
   // 添加到比較列表邏輯

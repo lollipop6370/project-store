@@ -45,8 +45,8 @@ export const getUserCart = (uid) => {
   return request.get("cart",{params:{uid:uid}});
 };
 /**
- * 更新後端購物車清單(現有物品數量 +1 or -1 or ...)
- * -> id:int , quantity:int
+ * 更新後端購物車清單(更新現有物品數量)
+ * -> token:String (head) , id:int , quantity:int
  * <- null
  */
 export const updateBackendCart = (id,quantity) => {
@@ -56,19 +56,19 @@ export const updateBackendCart = (id,quantity) => {
 };
 /**
  * 新增購物車清單
- * -> items:{id:int , quantity:int}
+ * -> token:String(head) , id:int , count:int
  * <- null
  */
-export const newBackendCart = (items) => {
-  return request.post("cart/newItem",items);
+export const newBackendCart = (itemId,count) => {
+  return request.get("cart/newItem", {params:{id:itemId, count:count}});
 };
 /**
  * 刪除購物車商品
- * -> items:{id:int}
+ * -> token:String , items:{id:int}
  * <- null
  */
-export const deleteBackendCart = (itemsId) => {
-  return request.post("cart/deleteItem",itemsId);
+export const deleteBackendCart = (itemId) => {
+  return request.get("cart/deleteItem",{params:{id:itemId}});
 }
 /**
  * 查詢商品詳情
@@ -87,7 +87,7 @@ export const findUId = () => {
   return request.get("user/uid");
 }
 /**
- * 檢查是否登入
+ * 檢查是否登入、token是否過期
  * -> token:String (head)
  * <- {isLogin:Boolean}
  */

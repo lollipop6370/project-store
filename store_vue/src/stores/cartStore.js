@@ -32,13 +32,13 @@ export const useCartStore = defineStore('cart', {
     },
   },
   actions: {
-    async cartStoreAddItem(itemId) {
+    async cartStoreAddItem(itemId,count) {   // 什麼商品(itemId)，買了count個
       const existingItem = this.items.find(i => i.id === itemId);
       console.log("測試點5");
       console.log(this.items);
       if (existingItem) {  //購物車已有該商品
         console.log("測試點4");
-        existingItem.quantity += 1;
+        existingItem.quantity += count;
         console.log("測試點1:");
   console.log(existingItem.id,existingItem.quantity);
         await updateBackendCart(existingItem.id,existingItem.quantity);
@@ -47,13 +47,12 @@ export const useCartStore = defineStore('cart', {
       } else {  //購物車沒有該商品
         console.log("測試點3");
         this.itemsCount += 1;  //購物車新品+1
-        //this.items.push(item);
-        //await newBackendCart(item);
+        await newBackendCart(itemId,count);
       }
     },
     async cartStoreRemoveItem(itemId) {
       this.items = this.items.filter(item => item.id !== itemId);
-      //await deleteBackendCart(itemId);
+      await deleteBackendCart(itemId);
     },
     async cartStoreClearCart() {
       //await updateBackendCart(this.items);
@@ -61,10 +60,13 @@ export const useCartStore = defineStore('cart', {
       this.itemsCount = 0;
     },
     async cartStoredecrease(itemId){
-      const item = this.items.find(item => item.id == itemId);
-      if (item && item.quantity > 1) {
-        item.quantity -= 1;
-        //await updateBackendCart(this.items);
+      const existingItem = this.items.find(item => item.id == itemId);
+      if (existingItem && existingItem.quantity > 1) {
+        existingItem.quantity -= 1;
+        await updateBackendCart(existingItem.id,existingItem.quantity);
+      }
+      else if (existingItem && existingItem.quantity === 1){
+        await deleteBackendCart(existingItem.id);
       }
     },
     async cartUpdateItems(itemId){////////////////////////////////////////
