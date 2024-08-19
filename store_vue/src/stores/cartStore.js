@@ -47,6 +47,7 @@ export const useCartStore = defineStore('cart', {
       } else {  //購物車沒有該商品
         console.log("測試點3");
         this.itemsCount += 1;  //購物車新品+1
+        this.items.push({id: itemId,quantity: 1});
         await newBackendCart(itemId,count);
       }
     },
@@ -68,11 +69,6 @@ export const useCartStore = defineStore('cart', {
       else if (existingItem && existingItem.quantity === 1){
         await deleteBackendCart(existingItem.id);
       }
-    },
-    async cartUpdateItems(itemId){////////////////////////////////////////
-      const item = this.items.find(item => item.id == itemId);
-      item.quantity += 1;
-      //await updateBackendCart(this.items);
     },
     async cartStoreReload(){
       let userStore = useUserStore();

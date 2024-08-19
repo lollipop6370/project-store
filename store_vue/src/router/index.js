@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../page/Home.vue';
 import { checkLogin } from '@/api';
+import { useUserStore } from '@/stores/userStore';
 
 const routes = [
   {
@@ -57,9 +58,16 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {    //全局守衛
+  let userStore = useUserStore();
   if (to.name === 'cart' | to.name === 'order'){   //檢查是否登入、token是否過期
-    if(await checkLogin()){
-      return true;
+    if(userStore.getUserStoreToken !== null){
+      if(await checkLogin()){
+        return true;
+      }
+      else{
+        alert("please login!")
+        return {name:"login"};
+      }
     }
     else{
       alert("please login!")
