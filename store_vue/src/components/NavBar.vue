@@ -36,7 +36,7 @@
         <router-link to="/cart" class="cart-link">
           <div class="icon cart-icon">
             <i class="fas fa-shopping-cart"></i>
-            <span class="icon-count">2</span>
+            <span class="icon-count" v-if="uislogin">{{ itemCount }}</span>
           </div>
         </router-link>
       </div>
@@ -48,9 +48,12 @@
 <script setup>
 import { onUpdated , computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
+import { useCartStore } from '@/stores/cartStore';
 const userStore = useUserStore();
+const cartStore = useCartStore();
 const uislogin = computed(() => userStore.getUserStoreLogin);
 const username = computed(() => userStore.getUsername);
+const itemCount = computed(() => cartStore.cartStoreTotalItemsCount);
 
 const logoutClick = async()=>{
   await userStore.userStoreLogout();

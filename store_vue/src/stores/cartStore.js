@@ -33,7 +33,7 @@ export const useCartStore = defineStore('cart', {
   },
   actions: {
     async cartStoreAddItem(itemId,count) {   // 什麼商品(itemId)，買了count個
-      const existingItem = this.items.find(i => i.id === itemId);
+      const existingItem = this.items.find(i => i.id === parseInt(itemId));
       console.log("測試點5");
       console.log(this.items);
       if (existingItem) {  //購物車已有該商品
@@ -47,13 +47,15 @@ export const useCartStore = defineStore('cart', {
       } else {  //購物車沒有該商品
         console.log("測試點3");
         this.itemsCount += 1;  //購物車新品+1
-        this.items.push({id: itemId,quantity: 1});
+        this.items.push({id: parseInt(itemId),quantity: count});
+        console.log(this.items);
         await newBackendCart(itemId,count);
       }
     },
     async cartStoreRemoveItem(itemId) {
       this.items = this.items.filter(item => item.id !== itemId);
       await deleteBackendCart(itemId);
+      this.itemsCount -= 1;
     },
     async cartStoreClearCart() {
       //await updateBackendCart(this.items);
@@ -67,7 +69,9 @@ export const useCartStore = defineStore('cart', {
         await updateBackendCart(existingItem.id,existingItem.quantity);
       }
       else if (existingItem && existingItem.quantity === 1){
+        this.items = this.items.filter(item => item.id !== itemId);
         await deleteBackendCart(existingItem.id);
+        this.itemsCount -= 1;
       }
     },
     async cartStoreReload(){
@@ -76,8 +80,10 @@ export const useCartStore = defineStore('cart', {
       //console.log("reload1");
       console.log(userStore.getUserStoreToken);
       let result = await getUserCart(uid);   //去後端重新載入購物車
+
       //console.log("reload2");
       //console.log(result);
+      console.log(result.length);
       this.itemsCount = result.length;
       this.items = result;
     },

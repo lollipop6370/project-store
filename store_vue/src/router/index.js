@@ -60,7 +60,7 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {    //全局守衛
   let userStore = useUserStore();
   if (to.name === 'cart' | to.name === 'order'){   //檢查是否登入、token是否過期
-    if(userStore.getUserStoreToken !== null){
+    if(userStore.getUserStoreToken !== null && userStore.getUserStoreLogin === true){
       if(await checkLogin()){
         return true;
       }
