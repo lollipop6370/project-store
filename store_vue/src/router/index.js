@@ -7,6 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
+    meta: {showNavBar: true, showBEBar: false},
     component: Home
   },
   {
@@ -18,11 +19,13 @@ const routes = [
   {
     path: '/productDetail',
     name: 'productDetail',
+    meta: {showNavBar: true, showBEBar: false},
     component: () => import('@/page/ProductDetail.vue')
   },
   {
     path: '/cart',
     name: 'cart',
+    meta: {showNavBar: true, showBEBar: false},
     component: () => import('../page/Cart.vue')
   },
   {
@@ -38,17 +41,26 @@ const routes = [
   {
     path: '/register',
     name: 'register',
+    meta: {showNavBar: false, showBEBar: false},
     component: () => import('../page/Register.vue')
   },
   {
     path: '/login',
     name: 'login',
+    meta: {showNavBar: false, showBEBar: false},
     component: () => import('../page/Login.vue')
   },
   {
     path: '/order',
     name: 'order',
+    meta: {showNavBar: true, showBEBar: false},
     component: () => import('@/page/Order.vue')
+  },
+  {
+    path: '/backend/home',
+    name: 'backend-home',
+    meta: {showNavBar: false, showBEBar: false},
+    component: () => import('@/page/backend/BEHome.vue')
   }
 ];
 
