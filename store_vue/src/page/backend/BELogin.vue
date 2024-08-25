@@ -1,9 +1,12 @@
 <template>
     <div class="login-container">
       <div class="image-section">
-        <img src="" alt="Login Image">
+        <img src="@/assets/back.jpg" alt="Login Image">
       </div>
       <div class="login-section">
+        <div class="title">
+          <h1>後臺管理系統</h1>
+        </div>
         <h2>登入</h2>
         <form @submit.prevent="handleLogin">
           <div class="input-group">
@@ -20,23 +23,17 @@
     </div>
 </template>
   
-<script>
-  export default {
-    name: 'LoginPage',
-    data() {
-      return {
-        username: '',
-        password: ''
-      };
-    },
-    methods: {
-      handleLogin() {
+<script setup>
+  import { ref } from 'vue';
+  
+  const username = ref();
+  const password = ref();
+
+  const handleLogin = () => {
         // 處理登入邏輯
-        console.log('用戶名:', this.username);
-        console.log('密碼:', this.password);
-      }
-    }
-  };
+    
+  }
+
 </script>
   
 <style scoped>
@@ -53,7 +50,7 @@
   }
   
   .image-section {
-    flex: 1;
+    flex: 5;
     background-color: #f5f5f5;
     display: flex;
     justify-content: center;
@@ -61,19 +58,25 @@
   }
   
   .image-section img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    display: block;
   }
   
   .login-section {
-    flex: 1;
+    flex: 3;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 0 40px;
     background-color: #ffffff;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .title {
+    align-self: flex-start; /* 讓這個 div 靠上對齊 */
+    margin-top: 0; 
   }
   
   h2 {
