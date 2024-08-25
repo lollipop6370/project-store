@@ -50,8 +50,6 @@ export const getUserCart = (uid) => {
  * <- null
  */
 export const updateBackendCart = (id,quantity) => {
-  console.log("RRRRRRRRRRRRRR");
-  console.log(id,quantity);
   return request.get("cart/updateList",{params:{id:id,quantity:quantity}});
 };
 /**
@@ -93,4 +91,12 @@ export const findUId = () => {
  */
 export const checkLogin = () => {
   return request.get("user/checkLogin");
+}
+/**
+ * 後台登入
+ * -> username:String, password:String
+ * <- null
+ */
+export const backendLogin = (username, password) => {
+  return request.get("backend/login",{params:{username:username,password:password}});
 }

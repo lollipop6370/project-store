@@ -25,13 +25,17 @@
   
 <script setup>
   import { ref } from 'vue';
-  
+  import { backendLogin } from '@/api';
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
   const username = ref();
   const password = ref();
 
-  const handleLogin = () => {
-        // 處理登入邏輯
-    
+  const handleLogin = async () => {
+    // 處理登入邏輯
+    let result = await backendLogin(username.value, password.value);
+    if(result === true)
+        router.push({name:"backend-home"});
   }
 
 </script>
