@@ -57,10 +57,22 @@ const routes = [
     component: () => import('@/page/Order.vue')
   },
   {
+    path: '/backend/login',
+    name: 'backend-login',
+    meta: {showNavBar: false, showBEBar: false},
+    component: () => import('@/page/backend/BELogin.vue')
+  },
+  {
     path: '/backend/home',
     name: 'backend-home',
-    meta: {showNavBar: false, showBEBar: false},
+    meta: {showNavBar: false, showBEBar: true},
     component: () => import('@/page/backend/BEHome.vue')
+  },
+  {
+    path: '/backend/product',
+    name: 'backend-product',
+    meta: {showNavBar: false, showBEBar: true},
+    component: () => import('@/page/backend/BEProduct.vue')
   }
 ];
 

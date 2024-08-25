@@ -9,7 +9,7 @@
         <aside class="sidebar">
           <!-- 左邊固定橫條內容 -->
           <ul>
-            <li>選項1</li>
+            <li @click="c1">選項1</li>
             <li>選項2</li>
             <li>選項3</li>
           </ul>
@@ -19,7 +19,11 @@
 </template>
   
 <script setup>
-
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
+  const c1 = () => {
+    router.push({ name:"backend-product" });
+  }
 </script>
   
 <style scoped>
@@ -45,7 +49,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 5000;
   }
   
   .container {
@@ -60,7 +64,7 @@
     color: white;
     padding: 15px;
     position: fixed;
-    top: 60px;
+    top: 100px;
     bottom: 0;
     left: 0;
     z-index: 1000;

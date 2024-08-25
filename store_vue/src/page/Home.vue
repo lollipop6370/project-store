@@ -87,7 +87,7 @@
     </div>
   </template>
   
-  <script setup>
+<script setup>
   import { ref , onMounted} from 'vue';
   import { getProductCount, getNMProduct } from "../api/index"
   import { useRouter } from 'vue-router';
@@ -162,7 +162,7 @@ const productClick = (id) =>{ //當商品被點擊時，路由至商品詳情並
       cartStore.cartStoreReload();
     }
   })
-  </script>
+</script>
   
 <style scoped>
   /* 英雄區域的樣式 */
