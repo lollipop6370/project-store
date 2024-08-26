@@ -100,3 +100,15 @@ export const checkLogin = () => {
 export const backendLogin = (username, password) => {
   return request.get("backend/login",{params:{username:username,password:password}});
 }
+/**
+ * 後台讀取所有用戶資訊
+ * -> null
+ * <- {uid:int, username:String, password:String, email:String}
+ */
+export const backendUser = () => {
+  return request.get("backend/user");
+}
+/**
+ * 後台編輯用戶
+ * ->
+ */

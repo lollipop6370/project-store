@@ -9,7 +9,7 @@
         <aside class="sidebar">
           <!-- 左邊固定橫條內容 -->
           <ul>
-            <li @click="c1">選項1</li>
+            <li @click="c1">用戶管理</li>
             <li>選項2</li>
             <li>選項3</li>
           </ul>

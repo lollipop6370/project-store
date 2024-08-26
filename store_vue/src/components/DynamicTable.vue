@@ -9,13 +9,17 @@
         <tbody>
           <tr v-for="(row, rowIndex) in data" :key="rowIndex">
             <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+            <td>
+              <button class="btn" @click="edit(row)">編輯</button>
+              <button class="btn" @click="del(row)">刪除</button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
   export default {
     name: 'DynamicTable',
     props: {
@@ -27,11 +31,19 @@
         type: Array,
         required: true
       }
+    },
+    methods: {
+      edit(row){
+        this.$emit('onEdit',row); //發射事件及該row資料給父組件
+      },
+      del(row){
+        this.$emit('onDel',row); //發射事件及該row資料給父組件
+      }
     }
   }
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   table {
     width: 100%;
     border-collapse: collapse;
@@ -40,11 +52,16 @@
   th, td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
+    text-align: center;
   }
   
   th {
     background-color: #f2f2f2;
   }
-  </style>
+
+  button{
+    padding: 3px;
+    margin-left: 5px;
+  }
+</style>
   
