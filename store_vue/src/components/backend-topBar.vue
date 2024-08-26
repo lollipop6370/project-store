@@ -22,7 +22,7 @@
   import { useRouter } from 'vue-router';
   const router = useRouter();
   const c1 = () => {
-    router.push({ name:"backend-product" });
+    router.push({ name:"backend-user" });
   }
 </script>
   

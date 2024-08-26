@@ -73,6 +73,12 @@ const routes = [
     name: 'backend-product',
     meta: {showNavBar: false, showBEBar: true},
     component: () => import('@/page/backend/BEProduct.vue')
+  },
+  {
+    path: '/backend/user',
+    name: 'backend-user',
+    meta: {showNavBar: false, showBEBar: true},
+    component: () => import('@/page/backend/BEUser.vue')
   }
 ];
 
