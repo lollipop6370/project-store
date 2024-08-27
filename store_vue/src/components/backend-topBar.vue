@@ -9,9 +9,9 @@
         <aside class="sidebar">
           <!-- 左邊固定橫條內容 -->
           <ul>
-            <li @click="c1">用戶管理</li>
-            <li>選項2</li>
-            <li>選項3</li>
+            <li @click="clickUser">用戶管理</li>
+            <li @click="clickProduct">商品管理</li>
+            <li @click="clickOrder">訂單管理</li>
           </ul>
         </aside>
       </div>
@@ -21,9 +21,15 @@
 <script setup>
   import { useRouter } from 'vue-router';
   const router = useRouter();
-  const c1 = () => {
+  const clickUser = () => {
     router.push({ name:"backend-user" });
   }
+  const clickProduct = () => {
+
+  };
+  const clickOrder = () => {
+
+  };
 </script>
   
 <style scoped>
