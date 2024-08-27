@@ -1,6 +1,13 @@
 <template>
   <div class="use-table">
     <DynamicTable :headers="tableHeaders" :data="tableData" @onEdit="onChildEdit" @onDel="onChildDel"></DynamicTable>
+    <!-- 分頁導航 -->
+    <div class="pagination">
+          <button @click="previousPage" :disabled="pageInfo.currentPage === 1">Previous</button>
+          <span>Page {{ pageInfo.currentPage }} of {{ pageInfo.totalPage }}</span>
+          <button @click="nextPage" :disabled="pageInfo.currentPage === pageInfo.totalPage">Next</button>
+    </div>
+    <!-- 懸浮視窗 -->
     <div v-if="isEditModalOpen" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
         <h2>編輯用戶資訊</h2>
@@ -35,7 +42,7 @@
 
 <script setup>
   import DynamicTable from '@/components/DynamicTable.vue';
-  import { backendUser, userEdit, userDel } from '@/api';
+  import { backendUser, userEdit, userDel, userPageCount } from '@/api';
   import { onMounted, ref } from 'vue';
 
   const tableHeaders = ref(['uid', 'username', 'password', 'email', 'edit / delete']);
@@ -52,6 +59,18 @@
     password:"",
     email:""
   });
+  const pageInfo = ref({
+    currentPage: 1,
+    pageSize: 10,
+    totalPage: null
+  });
+  const previousPage = () =>{  //上一頁
+
+  };
+  const nextPage = () => {  //下一頁
+
+  };
+
   const resetForm = () => {   //清空表單
     formData.value.uid = null;
     formData.value.username = '';
@@ -79,7 +98,7 @@
   };
 
   const init = async() => {
-    let data = await backendUser();
+    let data = await backendUser(pageInfo.value);
     tableData.value = [];
     for(let i = 0; i < data.length; i++){
         let d = [data[i].uid, data[i].username, data[i].password, data[i].email];
@@ -104,6 +123,7 @@
 
   onMounted( async () => {
     await init();
+    pageInfo.value.totalPage = await userPageCount(pageInfo.value.pageSize);
   });
 
 </script>
@@ -179,5 +199,31 @@
 }
 .btn-cancel:hover {
   background-color: #cdd6c7;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  padding: 10px 20px;
+  line-height: 20px;
 }
 </style>

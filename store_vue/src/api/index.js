@@ -105,8 +105,8 @@ export const backendLogin = (username, password) => {
  * -> null
  * <- {uid:int, username:String, password:String, email:String}
  */
-export const backendUser = () => {
-  return request.get("backend/user");
+export const backendUser = (pageInfo) => {
+  return request.get("backend/user",{params:{currentPage:pageInfo.currentPage, pageSize:pageInfo.pageSize}});
 }
 /**
  * 後台編輯用戶
@@ -123,4 +123,12 @@ export const userEdit = (form) => {
  */
 export const userDel = (uid) => {
   return request.delete("backend/user",{params:{uid:uid}});
+}
+/**
+ * 獲取用戶總數(總頁數)
+ * -> pageSize:int
+ * <- totalPage:int
+ */
+export const userPageCount = (pageSize) => {
+  return request.get("backend/user/count",{params:{pageSize:pageSize}});
 }
