@@ -60,8 +60,16 @@
   }
 
   button{
-    padding: 3px;
+    padding: 3px 6px;
+    background-color: #87b36e;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
     margin-left: 5px;
+  }
+  button:hover {
+    background-color: #45a049;
   }
 </style>
   

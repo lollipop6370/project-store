@@ -110,5 +110,9 @@ export const backendUser = () => {
 }
 /**
  * 後台編輯用戶
- * ->
+ * -> { uid:int, username:String, password:String, email:String }
+ * <- null
  */
+export const userEdit = (form) => {
+  return request.post("backend/user",form);
+}
