@@ -14,12 +14,11 @@ service.interceptors.request.use((config) => {
     // 如果有token，通過請求頭傳給後端
     const userStore = useUserStore();
     const token = userStore.getUserStoreToken;
-    console.log("Token:" + token);
        if (token) {
         // config.headers['token'] = token  // 錯誤: header中沒有聲明叫'token'的key
         (config.headers)['token'] = token;
       }
-      console.log("Token:" + token);
+    console.log("Token:" + token);
     return config;
 });
 

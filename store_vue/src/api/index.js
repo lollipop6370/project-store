@@ -116,3 +116,11 @@ export const backendUser = () => {
 export const userEdit = (form) => {
   return request.post("backend/user",form);
 }
+/**
+ * 後台刪除用戶
+ * -> uid:int
+ * <- null
+ */
+export const userDel = (uid) => {
+  return request.delete("backend/user",{params:{uid:uid}});
+}

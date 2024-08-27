@@ -1,10 +1,9 @@
 <template>
   <div class="use-table">
     <DynamicTable :headers="tableHeaders" :data="tableData" @onEdit="onChildEdit" @onDel="onChildDel"></DynamicTable>
-    <div v-if="isModalOpen" class="modal-overlay" @click="closeModal">
+    <div v-if="isEditModalOpen" class="modal-overlay" @click="closeModal">
       <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
         <h2>編輯用戶資訊</h2>
-        <p>這是懸浮視窗的內容。</p>
         <form @submit.prevent="handleSubmit">
             <div class="input-group">
                 <label for="username">姓名</label>
@@ -24,12 +23,19 @@
         </form>
       </div>
     </div>
+    <div v-if="isDelModalOpen" class="modal-overlay" @click="closeDelModal">
+      <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
+        <h2>刪除此用戶?</h2>
+        <button class="btn-config" @click="checkdel">確定</button>
+        <button class="btn-cancel" @click="closeDelModal">取消</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
   import DynamicTable from '@/components/DynamicTable.vue';
-  import { backendUser, userEdit } from '@/api';
+  import { backendUser, userEdit, userDel } from '@/api';
   import { onMounted, ref } from 'vue';
 
   const tableHeaders = ref(['uid', 'username', 'password', 'email', 'edit / delete']);
@@ -38,7 +44,8 @@
         ['Jane', 32, '設計師'],
         ['Mike', 36, '產品經理']
   ]);
-  const isModalOpen = ref(false);
+  const isEditModalOpen = ref(false);
+  const isDelModalOpen = ref(false);
   const formData = ref({
     uid:null,
     username:"",
@@ -54,32 +61,49 @@
 
   const onChildEdit = (row)=> {   //編輯用戶
     console.log(row);//做一個懸浮視窗編輯用戶
-    isModalOpen.value = true;
+    isEditModalOpen.value = true;
     formData.value.uid = row[0];
     formData.value.username = row[1];
     formData.value.password = row[2];
     formData.value.email = row[3];
   };
-  const onChildDel = (row)=> {   //刪除用戶
-    //確認要刪除?
-  };
 
   const handleSubmit = async () =>{   //確定編輯
     await userEdit(formData.value);
     resetForm();
-    isModalOpen.value = false;
+    await init();
+    isEditModalOpen.value = false;
   };
-  const closeModal = () =>{   //取消編輯
-    isModalOpen.value = false;
+  const closeModal = () =>{   //關閉懸浮視窗
+    isEditModalOpen.value = false;
   };
 
-  onMounted( async () => {
+  const init = async() => {
     let data = await backendUser();
     tableData.value = [];
     for(let i = 0; i < data.length; i++){
         let d = [data[i].uid, data[i].username, data[i].password, data[i].email];
         tableData.value.push(d);
     }
+  };
+
+  const delUid = ref();
+  const onChildDel = (row)=> {   //刪除用戶
+    //確認要刪除?
+    delUid.value = row[0];
+    isDelModalOpen.value = true;
+  };
+  const checkdel = async () => {  //確定刪除
+    await userDel(delUid.value);
+    isDelModalOpen.value = false;
+    await init();
+  };
+  const closeDelModal = () => {    //取消刪除
+    isDelModalOpen.value = false;
+  };
+
+  onMounted( async () => {
+    await init();
   });
 
 </script>
