@@ -164,3 +164,11 @@ export const backendProductEdit = (product) => {
 export const backendProductDel = (id) => {
   return request.delete("backend/product",{params:{id:id}});
 }
+/**
+ * 新增商品(圖片)
+ * -> {  }
+ * <- null
+ */
+export const backendProductImg = (file) => {
+  return request.post("backend/product/new/img",file);
+}

@@ -1,5 +1,6 @@
 <template>
   <div class="use-table">
+    <button class="btnNew" @click="onBtnNew">新增</button>
     <DynamicTable :headers="tableHeaders" :data="tableData" :imgData="tableImgData" @onEdit="onChildEdit" @onDel="onChildDel"></DynamicTable>
     <!-- 分頁導航 -->
     <div class="pagination">
@@ -31,6 +32,7 @@
         </form>
       </div>
     </div>
+    <!-- 懸浮視窗(刪除) -->
     <div v-if="isDelModalOpen" class="modal-overlay" @click="closeDelModal">
       <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
         <h2>刪除此商品?</h2>
@@ -38,12 +40,40 @@
         <button class="btn-cancel" @click="closeDelModal">取消</button>
       </div>
     </div>
+    <!-- 懸浮視窗(新增) -->
+    <div v-if="isNewModalOpen" class="modal-overlay" @click="closeNewModal">
+      <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
+        <h2>新增商品</h2>
+        <form @submit.prevent="handleNewSubmit">
+            <!-- <img :src="formData.image" alt="not found"/> -->
+            <div class="input-group">
+                <label for="image">商品圖片</label>
+                <input type="file" id="image" accept="image/gif, image/jpeg, image/png" @change="onFileChange" required>
+            </div>
+            <div class="input-group">
+                <label for="name">商品名</label>
+                <input type="text" id="name" v-model="formData.name" required>
+            </div>
+            <div class="input-group">
+                <label for="price">價格</label>
+                <input type="int" id="price" v-model="formData.price" required>
+            </div>
+            <div class="input-group">
+                <label for="type">商品總類</label>
+                <input type="int" id="type" v-model="formData.type" required>
+            </div>
+            
+            <button class="btn-config" type="submit">確定</button>
+            <button class="btn-cancel" @click="closeNewModal">取消</button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
   import DynamicTable from '@/components/DynamicTable.vue';
-  import { backendProduct , backendProductPage , backendProductEdit , backendProductDel } from '@/api';
+  import { backendProduct , backendProductPage , backendProductEdit , backendProductDel , backendProductImg } from '@/api';
   import { onMounted, ref } from 'vue';
   const tableHeaders = ref(['image', 'id', 'name', 'price', 'type', 'edit / delete']);
   const tableData = ref([
@@ -59,6 +89,8 @@
   });
   const isEditModalOpen = ref(false);
   const isDelModalOpen = ref(false);
+  const isNewModalOpen = ref(false);
+  const selectFile = ref(null);
   const formData = ref({
     id: null,
     name: "",
@@ -118,6 +150,34 @@
   const closeModal = () => {   //關閉編輯懸浮視窗
     isEditModalOpen.value = false;
   };
+
+  const onBtnNew = () => {  //開啟新增懸浮視窗
+    formData.value.image = "";
+    formData.value.id = null;
+    formData.value.name = "";
+    formData.value.price = null;
+    formData.value.type = null;
+    isNewModalOpen.value = true;
+  };
+  const onFileChange = (even) => {  //保存選擇的圖片
+    selectFile.value = even.target.files[0];
+  };
+  const handleNewSubmit = async () => {   // 送出新增商品
+    const imgFormData = new FormData();
+    imgFormData.append("file",selectFile.value);
+    console.log(selectFile);
+    await backendProductImg(imgFormData);
+
+
+////////////
+
+    await init();
+    pageInfo.value.totalPage = await backendProductPage(pageInfo.value.pageSize);
+  };
+  const closeNewModal = () => {  //關閉新增懸浮視窗
+    isNewModalOpen.value = false;
+  };
+
   onMounted( async () => {
     await init();
     pageInfo.value.totalPage = await backendProductPage(pageInfo.value.pageSize);
@@ -221,5 +281,18 @@
 }
 .btn-cancel:hover {
   background-color: #cdd6c7;
+}
+
+.btnNew {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.btnNew:hover {
+  background-color: #45a049;
 }
 </style>
