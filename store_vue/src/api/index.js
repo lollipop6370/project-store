@@ -140,3 +140,11 @@ export const userPageCount = (pageSize) => {
 export const backendProduct = (pageInfo) => {
   return request.get("backend/product",{params:{currentPage:pageInfo.currentPage,pageSize:pageInfo.pageSize}});
 }
+/**
+ * 獲取總商品數
+ * -> null
+ * <- productCount:int
+ */
+export const backendProductPage = (pageSize) => {
+  return request.get("backend/product/page",{params:{pageSize:pageSize}});
+}
