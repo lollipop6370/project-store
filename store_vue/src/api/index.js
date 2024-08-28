@@ -148,3 +148,19 @@ export const backendProduct = (pageInfo) => {
 export const backendProductPage = (pageSize) => {
   return request.get("backend/product/page",{params:{pageSize:pageSize}});
 }
+/**
+ * 編輯商品
+ * -> formData:{ id:int, name:String, price:int, type:int, image:string }
+ * <- null
+ */
+export const backendProductEdit = (product) => {
+  return request.post("backend/product/edit",product);
+}
+/**
+ * 刪除商品
+ * -> id:int
+ * <- null
+ */
+export const backendProductDel = (id) => {
+  return request.delete("backend/product",{params:{id:id}});
+}

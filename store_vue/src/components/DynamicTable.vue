@@ -13,7 +13,7 @@
             </td>
             <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
             <td>
-              <button class="btn" @click="edit(row)">編輯</button>
+              <button class="btn" @click="edit(row,imgData[rowIndex])">編輯</button>
               <button class="btn" @click="del(row)">刪除</button>
             </td>
           </tr>
@@ -41,8 +41,8 @@
       }
     },
     methods: {
-      edit(row){
-        this.$emit('onEdit',row); //發射事件及該row資料給父組件
+      edit(row,image){
+        this.$emit('onEdit',row,image); //發射事件及該row資料給父組件
       },
       del(row){
         this.$emit('onDel',row); //發射事件及該row資料給父組件
