@@ -132,3 +132,11 @@ export const userDel = (uid) => {
 export const userPageCount = (pageSize) => {
   return request.get("backend/user/count",{params:{pageSize:pageSize}});
 }
+/**
+ * 獲取後台商品列表
+ * -> pageInfo:{currentPage:int, pageSize:int}
+ * <- { id:int, name:String, image:String, price:double, type:int }
+ */
+export const backendProduct = (pageInfo) => {
+  return request.get("backend/product",{params:{currentPage:pageInfo.currentPage,pageSize:pageInfo.pageSize}});
+}

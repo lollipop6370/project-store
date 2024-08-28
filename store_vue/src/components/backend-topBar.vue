@@ -6,29 +6,41 @@
         <div class="user-info">用戶名 | 設置 | 登出</div>
       </header>
       <div class="container">
-        <aside class="sidebar">
+        <div class="sidebar">
           <!-- 左邊固定橫條內容 -->
           <ul>
-            <li @click="clickUser">用戶管理</li>
-            <li @click="clickProduct">商品管理</li>
-            <li @click="clickOrder">訂單管理</li>
+            <li :class="{active: selectUser}" @click="clickUser">用戶管理</li>
+            <li :class="{active: selectProduct}" @click="clickProduct">商品管理</li>
+            <li :class="{active: selectOrder}" @click="clickOrder">訂單管理</li>
           </ul>
-        </aside>
+        </div>
       </div>
     </div>
 </template>
   
 <script setup>
+  import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   const router = useRouter();
+  const selectUser = ref(false);
+  const selectProduct = ref(false);
+  const selectOrder = ref(false);
   const clickUser = () => {
+    selectUser.value = true;
+    selectProduct.value = false;
+    selectOrder.value = false;
     router.push({ name:"backend-user" });
   }
   const clickProduct = () => {
-
+    selectUser.value = false;
+    selectProduct.value = true;
+    selectOrder.value = false;
+    router.push({name:"backend-product"});
   };
   const clickOrder = () => {
-
+    selectUser.value = false;
+    selectProduct.value = false;
+    selectOrder.value = true;
   };
 </script>
   
@@ -65,8 +77,8 @@
   }
   
   .sidebar {
-    width: 250px;
-    background-color: #444;
+    width: 220px;
+    background-color: #161616;
     color: white;
     padding: 15px;
     position: fixed;
@@ -75,12 +87,29 @@
     left: 0;
     z-index: 1000;
   }
-  
-  .content {
-    flex: 1;
-    margin-left: 250px; /* 根據 sidebar 的寬度調整 */
-    padding: 20px;
-    overflow-y: auto;
+
+  .sidebar ul{
+    list-style-type: none;
+    padding: 0%;
   }
+  .sidebar li {
+    margin: 10px 0;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+    padding: 10px;
+
+  }
+
+  .sidebar li:hover{
+    background-color: #505050;
+  }
+  .sidebar li:active{
+    background-color: #333333;
+  }
+  .sidebar li.active{
+    background-color: #404040;
+  }
+  
 </style>
   

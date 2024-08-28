@@ -65,10 +65,12 @@
     totalPage: null
   });
   const previousPage = () =>{  //上一頁
-
+    pageInfo.value.currentPage -= 1;
+    init();
   };
   const nextPage = () => {  //下一頁
-
+    pageInfo.value.currentPage += 1;
+    init();
   };
 
   const resetForm = () => {   //清空表單

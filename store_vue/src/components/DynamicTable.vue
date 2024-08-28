@@ -8,6 +8,9 @@
         </thead>
         <tbody>
           <tr v-for="(row, rowIndex) in data" :key="rowIndex">
+            <td v-if="imgData && imgData.length > 0">
+              <img :src="imgData[rowIndex]" alt="not find"/>
+            </td>
             <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
             <td>
               <button class="btn" @click="edit(row)">編輯</button>
@@ -30,6 +33,11 @@
       headers: {
         type: Array,
         required: true
+      },
+      imgData: {
+        type: Array,
+        required: false,
+        default: () => []
       }
     },
     methods: {
