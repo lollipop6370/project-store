@@ -82,7 +82,7 @@ const product = ref({
 });
 const selectedSize = ref('M'); // 預設選擇的尺寸
 const quantity = ref(1); // 預設選擇的數量
-const itemId = route.query.id;
+const itemId = route.query.pid;
 const decreaseQuantity = () => {
   if (quantity.value > 1) {
     quantity.value--;

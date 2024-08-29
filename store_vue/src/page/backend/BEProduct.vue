@@ -51,6 +51,10 @@
                 <input type="file" id="image" accept="image/gif, image/jpeg, image/png" @change="onFileChange" required>
             </div>
             <div class="input-group">
+                <label for="pid">pid</label>
+                <input type="int" id="pid" v-model="formData.pid" required>
+            </div>
+            <div class="input-group">
                 <label for="name">商品名</label>
                 <input type="text" id="name" v-model="formData.name" required>
             </div>
@@ -75,7 +79,7 @@
   import DynamicTable from '@/components/DynamicTable.vue';
   import { backendProduct , backendProductPage , backendProductEdit , backendProductDel , backendProductImg } from '@/api';
   import { onMounted, ref } from 'vue';
-  const tableHeaders = ref(['image', 'id', 'name', 'price', 'type', 'edit / delete']);
+  const tableHeaders = ref(['image', 'pid', 'name', 'price', 'type', 'edit / delete']);
   const tableData = ref([
         ['John', 28, '工程師'],
         ['Jane', 32, '設計師'],
@@ -92,7 +96,7 @@
   const isNewModalOpen = ref(false);
   const selectFile = ref(null);
   const formData = ref({
-    id: null,
+    pid: null,
     name: "",
     price: null,
     type: null,
@@ -104,7 +108,7 @@
     tableData.value = [];
     for(let i = 0; i < data.length; i++){
         tableImgData.value.push(data[i].image);
-        let d = [data[i].id, data[i].name, data[i].price, data[i].type];
+        let d = [data[i].pid, data[i].name, data[i].price, data[i].type];
         tableData.value.push(d);
     }
   };
@@ -119,7 +123,7 @@
 
   const onChildEdit = (row,image) => {  //按下編輯
     formData.value.image = image;
-    formData.value.id = row[0];
+    formData.value.pid = row[0];
     formData.value.name = row[1];
     formData.value.price = row[2];
     formData.value.type = row[3];
@@ -132,14 +136,14 @@
   };
   const onChildDel = (row,image) => {   //按下刪除
     formData.value.image = image;
-    formData.value.id = row[0];
+    formData.value.pid = row[0];
     formData.value.name = row[1];
     formData.value.price = row[2];
     formData.value.type = row[3];
     isDelModalOpen.value = true;
   };
   const checkdel = async () => {    //送出刪除
-    await backendProductDel(formData.value.id);
+    await backendProductDel(formData.value.pid);
     await init();
     pageInfo.value.totalPage = await backendProductPage(pageInfo.value.pageSize);
     isDelModalOpen.value = false;
@@ -153,7 +157,7 @@
 
   const onBtnNew = () => {  //開啟新增懸浮視窗
     formData.value.image = "";
-    formData.value.id = null;
+    formData.value.pid = null;
     formData.value.name = "";
     formData.value.price = null;
     formData.value.type = null;
@@ -165,14 +169,11 @@
   const handleNewSubmit = async () => {   // 送出新增商品
     const imgFormData = new FormData();
     imgFormData.append("file",selectFile.value);
-    console.log(selectFile);
+    imgFormData.append("product",JSON.stringify(formData.value));  //將對象序列化為JSON字符串
     await backendProductImg(imgFormData);
-
-
-////////////
-
     await init();
     pageInfo.value.totalPage = await backendProductPage(pageInfo.value.pageSize);
+    isNewModalOpen.value = false;
   };
   const closeNewModal = () => {  //關閉新增懸浮視窗
     isNewModalOpen.value = false;

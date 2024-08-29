@@ -49,16 +49,16 @@ export const getUserCart = (uid) => {
  * -> token:String (head) , id:int , quantity:int
  * <- null
  */
-export const updateBackendCart = (id,quantity) => {
-  return request.get("cart/updateList",{params:{id:id,quantity:quantity}});
+export const updateBackendCart = (pid,quantity) => {
+  return request.get("cart/updateList",{params:{pid:pid,quantity:quantity}});
 };
 /**
  * 新增購物車清單
- * -> token:String(head) , id:int , count:int
+ * -> token:String(head) , pid:int , count:int
  * <- null
  */
 export const newBackendCart = (itemId,count) => {
-  return request.get("cart/newItem", {params:{id:itemId, count:count}});
+  return request.get("cart/newItem", {params:{pid:itemId, count:count}});
 };
 /**
  * 刪除購物車商品
@@ -66,15 +66,15 @@ export const newBackendCart = (itemId,count) => {
  * <- null
  */
 export const deleteBackendCart = (itemId) => {
-  return request.get("cart/deleteItem",{params:{id:itemId}});
+  return request.get("cart/deleteItem",{params:{pid:itemId}});
 }
 /**
  * 查詢商品詳情
  * -> id:int
  * <- {id:int,name:String,price:double,image:String,type:int}
  */
-export const loadProductDetail = (id) => {
-  return request.get("home/nmProductByPage/detail",{ params:{id:id} });
+export const loadProductDetail = (pid) => {
+  return request.get("home/nmProductByPage/detail",{ params:{pid:pid} });
 }
 /**
  * 用token查uid
@@ -161,12 +161,12 @@ export const backendProductEdit = (product) => {
  * -> id:int
  * <- null
  */
-export const backendProductDel = (id) => {
-  return request.delete("backend/product",{params:{id:id}});
+export const backendProductDel = (pid) => {
+  return request.delete("backend/product",{params:{pid:pid}});
 }
 /**
  * 新增商品(圖片)
- * -> {  }
+ * -> { file: MultipartFile}
  * <- null
  */
 export const backendProductImg = (file) => {

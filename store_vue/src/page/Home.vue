@@ -67,7 +67,7 @@
         <h2>Filtered Products</h2>
         <div class="products-grid">
           <div class="product-card" v-for="product in normalProduct" :key="product.ppid">
-            <div class="can-click" @click="productClick(product.id)">
+            <div class="can-click" @click="productClick(product.pid)">
               <img :src="product.image" :alt="product.name" />
               <h3>{{ product.name }}</h3>
               <p>價格 : {{ product.price }}</p>
@@ -151,8 +151,8 @@ const nextPage = () => {
   const applyFilters = () => {
     // Apply filters logic (already handled by computed property)
   };
-const productClick = (id) =>{ //當商品被點擊時，路由至商品詳情並傳是哪個塗片傳的參數
-  router.push({ name:"productDetail" , query : { id:id }});
+const productClick = (pid) =>{ //當商品被點擊時，路由至商品詳情並傳是哪個塗片傳的參數
+  router.push({ name:"productDetail" , query : { pid:pid }});
 }
   // 組件掛載時調用(生命週期)
   onMounted(() => {

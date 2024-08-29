@@ -5,14 +5,14 @@ import { getUserCart , updateBackendCart , newBackendCart , deleteBackendCart } 
 export const useCartStore = defineStore('cart', {
   state: () => ({
     items: [{
-      id: 5,
+      pid: 5,
       image: 'path-to-image1.jpg',
       name: 'T Shirt For Men',
       price: 130.0,
       quantity: 1,
     },
     {
-      id: 3,
+      pid: 3,
       image: 'path-to-image2.jpg',
       name: 'Red Scarf For Women',
       price: 120.5,
@@ -33,27 +33,27 @@ export const useCartStore = defineStore('cart', {
   },
   actions: {
     async cartStoreAddItem(itemId,count) {   // 什麼商品(itemId)，買了count個
-      const existingItem = this.items.find(i => i.id === parseInt(itemId));
+      const existingItem = this.items.find(i => i.pid === parseInt(itemId));
       console.log("測試點5");
       console.log(this.items);
       if (existingItem) {  //購物車已有該商品
         console.log("測試點4");
         existingItem.quantity += count;
         console.log("測試點1:");
-  console.log(existingItem.id,existingItem.quantity);
-        await updateBackendCart(existingItem.id,existingItem.quantity);
+  console.log(existingItem.pid,existingItem.quantity);
+        await updateBackendCart(existingItem.pid,existingItem.quantity);
         console.log("測試點2");
-  console.log(existingItem.id,existingItem.quantity);
+  console.log(existingItem.pid,existingItem.quantity);
       } else {  //購物車沒有該商品
         console.log("測試點3");
         this.itemsCount += 1;  //購物車新品+1
-        this.items.push({id: parseInt(itemId),quantity: count});
+        this.items.push({pid: parseInt(itemId),quantity: count});
         console.log(this.items);
         await newBackendCart(itemId,count);
       }
     },
     async cartStoreRemoveItem(itemId) {
-      this.items = this.items.filter(item => item.id !== itemId);
+      this.items = this.items.filter(item => item.pid !== itemId);
       await deleteBackendCart(itemId);
       this.itemsCount -= 1;
     },
@@ -63,14 +63,14 @@ export const useCartStore = defineStore('cart', {
       this.itemsCount = 0;
     },
     async cartStoredecrease(itemId){
-      const existingItem = this.items.find(item => item.id == itemId);
+      const existingItem = this.items.find(item => item.pid == itemId);
       if (existingItem && existingItem.quantity > 1) {
         existingItem.quantity -= 1;
-        await updateBackendCart(existingItem.id,existingItem.quantity);
+        await updateBackendCart(existingItem.pid,existingItem.quantity);
       }
       else if (existingItem && existingItem.quantity === 1){
-        this.items = this.items.filter(item => item.id !== itemId);
-        await deleteBackendCart(existingItem.id);
+        this.items = this.items.filter(item => item.pid !== itemId);
+        await deleteBackendCart(existingItem.pid);
         this.itemsCount -= 1;
       }
     },
