@@ -45,6 +45,8 @@
   
   <style scoped>
   .login-page {
+    position: relative;
+    top: 200px;
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;

@@ -6,11 +6,11 @@ import { useUserStore } from '../stores/userStore';
 const service = axios.create({
     baseURL: "/app-dev/",
     timeout: 50000,
-  });
+});
 
 // 添加request攔截器
 service.interceptors.request.use((config) => {
-    NProgress.start()//開啟進度條
+    NProgress.start();//開啟進度條
     // 如果有token，通過請求頭傳給後端
     const userStore = useUserStore();
     const token = userStore.getUserStoreToken;
@@ -25,7 +25,7 @@ service.interceptors.request.use((config) => {
 // 添加response攔截器
 service.interceptors.response.use(
     (response) => {
-    NProgress.done()//關閉進度條
+      NProgress.done();//關閉進度條
   
       if(response.data.code !== 200){
         // 判斷回傳狀態碼
@@ -39,10 +39,10 @@ service.interceptors.response.use(
       }
     },
     (error) => {
-    NProgress.done()//關閉進度條
+      NProgress.done()//關閉進度條
       return Promise.reject(error.message);
     }
-  );
+);
   
-  export default service;
+export default service;
   

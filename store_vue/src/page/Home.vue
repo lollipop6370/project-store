@@ -1,29 +1,29 @@
 <template>
-    <div class="home">
-      <!-- 英雄區域 -->
-      <section class="hero" ref="heroSection">
+  <div class="home">
+    <!-- 英雄區域 -->
+    <section class="hero" ref="heroSection">
 
-        <div class="hero-content">
-          <h1>Welcome to PUIK Store</h1>
-          <p>Your one-stop shop for all your needs</p>
-          <button class="cta-button">Shop Now</button>
-        </div>
-      </section>
+      <div class="hero-content">
+        <h1>Welcome to PUIK Store</h1>
+        <p>Your one-stop shop for all your needs</p>
+        <button class="cta-button">Shop Now</button>
+      </div>
+    </section>
   
-      <!-- 特色產品區域 -->
-      <section class="featured-products">
-        <h2>Featured Products</h2>
-        <div class="featured-products-grid">
-          <!-- 假設有多個產品卡片 -->
-          <div class="featured-product-card" v-for="product in featuredProducts" :key="product.fpId">
-            <img :src="product.image" :alt="product.name" />
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.price }}</p>
-          </div>
+    <!-- 特色產品區域 -->
+    <section class="featured-products">
+      <h2>Featured Products</h2>
+      <div class="featured-products-grid">
+        <!-- 假設有多個產品卡片 -->
+        <div class="featured-product-card" v-for="product in featuredProducts" :key="product.fpId">
+          <img :src="product.image" :alt="product.name" />
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.price }}</p>
         </div>
-      </section>
+      </div>
+    </section>
 
-     <!-- 產品過濾區域和過濾後產品列表 -->
+    <!-- 產品過濾區域和過濾後產品列表 -->
     <section class="product-section">
       <!-- 左側過濾器區域 -->
       <aside class="product-filter">
@@ -66,7 +66,7 @@
       <section class="filtered-products">
         <h2>Filtered Products</h2>
         <div class="products-grid">
-          <div class="product-card" v-for="product in normalProduct" :key="product.ppid">
+          <div class="product-card" v-for="product in normalProduct" :key="product.pid">
             <div class="can-click" @click="productClick(product.pid)">
               <img :src="product.image" :alt="product.name" />
               <h3>{{ product.name }}</h3>
@@ -84,8 +84,8 @@
       </section>
     </section>
 
-    </div>
-  </template>
+  </div>
+</template>
   
 <script setup>
   import { ref , onMounted} from 'vue';
@@ -119,8 +119,8 @@
   ]);
 
   const normalProduct = ref([
-    {id: 1, name: 'Product a',price: '$9.99', image: '111' ,type: 1},
-    {id: 2, name: 'Product b',price: '$209.99', image: 'path-to-image-1.jpg' ,type: 3}
+    {pid: 1, name: 'Product a',price: '$9.99', image: '111' ,type: 1},
+    {pid: 2, name: 'Product b',price: '$209.99', image: 'path-to-image-1.jpg' ,type: 3}
   ]);
 
 

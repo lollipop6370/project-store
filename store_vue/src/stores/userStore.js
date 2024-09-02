@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { getToken, removeToken, setToken } from '@/utils/token-utils';
-import { userLogin , findUId } from "@/api";
+import { userLogin , checkLogin } from "@/api";
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -43,6 +43,13 @@ export const useUserStore = defineStore('user', {
         this.userInfo.token = "";
         removeToken();
         //alert("logout")
+      },
+      async userStoreCheckLogin(){
+         let check = await checkLogin();
+         if(check === false){
+            removeToken();
+         }
+         this.userInfo.isLoggedIn = check;
       },
     }
 });

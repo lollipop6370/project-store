@@ -117,7 +117,7 @@ onMounted(() => {
 });
 const loadDetail = async () =>{
   product.value = await loadProductDetail(itemId);
-}
+};
 </script>
 
 <style scoped>

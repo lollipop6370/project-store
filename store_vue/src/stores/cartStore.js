@@ -34,21 +34,12 @@ export const useCartStore = defineStore('cart', {
   actions: {
     async cartStoreAddItem(itemId,count) {   // 什麼商品(itemId)，買了count個
       const existingItem = this.items.find(i => i.pid === parseInt(itemId));
-      console.log("測試點5");
-      console.log(this.items);
       if (existingItem) {  //購物車已有該商品
-        console.log("測試點4");
         existingItem.quantity += count;
-        console.log("測試點1:");
-  console.log(existingItem.pid,existingItem.quantity);
         await updateBackendCart(existingItem.pid,existingItem.quantity);
-        console.log("測試點2");
-  console.log(existingItem.pid,existingItem.quantity);
       } else {  //購物車沒有該商品
-        console.log("測試點3");
         this.itemsCount += 1;  //購物車新品+1
         this.items.push({pid: parseInt(itemId),quantity: count});
-        console.log(this.items);
         await newBackendCart(itemId,count);
       }
     },

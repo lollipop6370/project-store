@@ -18,7 +18,7 @@
               <img :src="item.image" alt="Product Image" />
             </td>
             <td>{{ item.name }}</td>
-            <td>{{ item.price | currency }}</td>
+            <td>{{ item.price }}</td>
             <td>
               <div class="quantity-control">
                 <button @click="decreaseQuantity(item)">-</button>
@@ -26,7 +26,7 @@
                 <button @click="increaseQuantity(item)">+</button>
               </div>
             </td>
-            <td>{{ item.price * item.quantity | currency }}</td>
+            <td>{{ item.price * item.quantity }}</td>
             <td>
               <button @click="removeItem(item)">🗑️</button>
             </td>
@@ -102,12 +102,14 @@
   
   const checkout = () => {
     // 這裡可以添加結帳邏輯
-    router.push({ name:"order" });
+    router.push({ name:"checkout" });
   };
   </script>
   
   <style scoped>
   .cart-page {
+    position: relative;
+    top: 40px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;

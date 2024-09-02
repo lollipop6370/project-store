@@ -11,12 +11,6 @@ const routes = [
     component: Home
   },
   {
-    path: '/product/:id',
-    name: 'product-details',
-    // 這裡的懶加載有助於優化應用性能
-    //component: () => import('../views/ProductDetailsView.vue')
-  },
-  {
     path: '/productDetail',
     name: 'productDetail',
     meta: {showNavBar: true, showBEBar: false},
@@ -29,16 +23,6 @@ const routes = [
     component: () => import('../page/Cart.vue')
   },
   {
-    path: '/checkout',
-    name: 'checkout',
-    //component: () => import('../views/CheckoutView.vue')
-  },
-  {
-    path: '/user',
-    name: 'user',
-    //component: () => import('../views/UserProfileView.vue')
-  },
-  {
     path: '/register',
     name: 'register',
     meta: {showNavBar: false, showBEBar: false},
@@ -49,6 +33,12 @@ const routes = [
     name: 'login',
     meta: {showNavBar: false, showBEBar: false},
     component: () => import('../page/Login.vue')
+  },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    meta: {showNavBar: true, showBEBar: false},
+    component: () => import('@/page/Checkout.vue')
   },
   {
     path: '/order',

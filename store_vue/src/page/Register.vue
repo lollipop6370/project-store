@@ -34,7 +34,7 @@
   const passwordStrength = ref('weak');  // 密碼強度: weak, medium, strong
   
   const regist = ref(
-    {username : "阿鵝", email : "1111@gmail.com", password : "123456"}
+    {username : "zxcv1234", email : "1111@gmail.com", password : "123456"}
   );
 
   const checkPasswordStrength = () => {
@@ -87,6 +87,8 @@
   
   <style scoped>
   .register-page {
+    position: relative;
+    top: 200px;
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;

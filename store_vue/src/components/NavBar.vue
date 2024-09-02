@@ -25,17 +25,15 @@
           <router-link to="/login" class="login-link">Login / </router-link>
           <router-link to="/register" class="login-link">Register</router-link>
         </div>
-        <div class="icon">
-          <i class="fas fa-search"></i>
+        <div class="icon order-icon" v-if="uislogin" @click="orderClick">
+          <i class="i-order"></i>
         </div>
-        <div class="icon" v-if="uislogin" @click="logoutClick()">
-          <div class="icon logout-icon">
-            <i class="fas fa-shopping-cart"></i>
-          </div>
+        <div class="icon logout-icon" v-if="uislogin" @click="logoutClick">
+          <i class="i-logout"></i>
         </div>
         <router-link to="/cart" class="cart-link">
           <div class="icon cart-icon">
-            <i class="fas fa-shopping-cart"></i>
+            <i class="i-shopping-cart"></i>
             <span class="icon-count" v-if="uislogin">{{ itemCount }}</span>
           </div>
         </router-link>
@@ -46,9 +44,10 @@
 </template>
 
 <script setup>
-import { onUpdated , computed } from 'vue';
+import { computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { useCartStore } from '@/stores/cartStore';
+import router from '@/router';
 const userStore = useUserStore();
 const cartStore = useCartStore();
 const uislogin = computed(() => userStore.getUserStoreLogin);
@@ -61,10 +60,15 @@ const logoutClick = async()=>{
   console.log(userStore.uid)
   console.log(userStore.getUserStoreToken)
 };
+const orderClick = async () => {
+  await userStore.userStoreCheckLogin();
+  if(userStore.isLoggedIn === false){
+    alert("please login!");
+    router.push({name:"login"});
+  }
+  router.push({name:"order"});
+};
 
-onUpdated(() => {
-  
-})
 
 </script>
 
@@ -145,17 +149,25 @@ onUpdated(() => {
 
 .cart-icon {
   background-color: #f5f5f5;
-  background-image: url('@/components/icons/cart.png');
+  background-image: url('@/components/icons/cart.jpg');
   background-size: cover; /* 確保圖標不變形 */
   border-radius: 50%;
-  padding: 10px;
+  padding: 15px;
 }
 .logout-icon {
   background-color: #f5f5f5;
   background-image: url('@/components/icons/logout.jpg');
-  background-size: cover; /* 確保圖標不變形 */
+  background-size: cover; 
   border-radius: 50%;
-  padding: 10px;
+  padding: 15px;
+  width: auto;
+}
+.order-icon {
+  background-color: #f5f5f5;
+  background-image: url('@/components/icons/order.jpg');
+  background-size: cover; 
+  border-radius: 50%;
+  padding: 15px;
   width: auto;
 }
 </style>
