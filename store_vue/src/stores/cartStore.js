@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useUserStore } from './userStore';
-import { getUserCart , updateBackendCart , newBackendCart , deleteBackendCart } from '@/api';
+import { getUserCart , updateBackendCart , newBackendCart , deleteBackendCart , clearBackendCart } from '@/api';
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
@@ -49,7 +49,7 @@ export const useCartStore = defineStore('cart', {
       this.itemsCount -= 1;
     },
     async cartStoreClearCart() {
-      //await updateBackendCart(this.items);
+      await clearBackendCart();
       this.items = [];
       this.itemsCount = 0;
     },
@@ -68,13 +68,7 @@ export const useCartStore = defineStore('cart', {
     async cartStoreReload(){
       let userStore = useUserStore();
       let uid = userStore.getUserId;
-      //console.log("reload1");
-      console.log(userStore.getUserStoreToken);
       let result = await getUserCart(uid);   //去後端重新載入購物車
-
-      //console.log("reload2");
-      //console.log(result);
-      console.log(result.length);
       this.itemsCount = result.length;
       this.items = result;
     },

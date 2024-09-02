@@ -69,6 +69,14 @@ export const deleteBackendCart = (itemId) => {
   return request.get("cart/deleteItem",{params:{pid:itemId}});
 }
 /**
+ * 清空購物車
+ * -> token:String
+ * <- null
+ */
+export const clearBackendCart = () => {
+  return request.delete("cart/deleteItem");
+}
+/**
  * 查詢商品詳情
  * -> id:int
  * <- {id:int,name:String,price:double,image:String,type:int}
@@ -171,4 +179,20 @@ export const backendProductDel = (pid) => {
  */
 export const backendProductImg = (file) => {
   return request.post("backend/product/new/img",file);
+}
+/**
+ * 新增訂單
+ * ->{ uid:int, totalPrice:int, address:String, city:String, postal:int, receiver:String }
+ * <- oid:int
+ */
+export const newOrder = (obj) => {
+  return request.post("order",obj);
+}
+/**
+ * 新增訂單中的商品清單
+ * ->陣列:[{ oid:int, pid:int, quantity:int }]
+ * <- null
+ */
+export const newOrderItems = (obj) => {
+  return request.post("order/items",obj);
 }

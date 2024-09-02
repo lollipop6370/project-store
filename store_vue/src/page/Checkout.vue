@@ -37,19 +37,19 @@
         <form @submit.prevent="submitShipping">
           <div class="form-group">
             <label for="name">Receiver Name</label>
-            <input type="text" id="name" v-model="shipping.receiver" required />
+            <input type="text" id="name" v-model="orderForm.receiver" required />
           </div>
           <div class="form-group">
             <label for="address">Address</label>
-            <input type="text" id="address" v-model="shipping.address" required />
+            <input type="text" id="address" v-model="orderForm.address" required />
           </div>
           <div class="form-group">
             <label for="city">City</label>
-            <input type="text" id="city" v-model="shipping.city" required />
+            <input type="text" id="city" v-model="orderForm.city" required />
           </div>
           <div class="form-group">
-            <label for="zip">Postal Code</label>
-            <input type="text" id="zip" v-model="shipping.zip" required />
+            <label for="postal">Postal Code</label>
+            <input type="int" id="postal" v-model="orderForm.postal" required />
           </div>
         </form>
       </div>
@@ -83,16 +83,20 @@
 <script setup>
   import { ref, computed } from 'vue';
   import { useCartStore } from '@/stores/cartStore';
+  import { useUserStore } from '@/stores/userStore';
+  import { newOrder , newOrderItems } from '@/api';
+  import router from '@/router';
   
   const cartStore = useCartStore();
+  const userStore = useUserStore();
 
   const cartItems = ref(cartStore.items);
   
-  const shipping = ref({
+  const orderForm = ref({
     receiver: '',
     address: '',
     city: '',
-    zip: '',
+    postal: null,
   });
   
   const payment = ref({
@@ -105,20 +109,26 @@
     return cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0);
   });
   
-  const submitShipping = () => {
-    // 處理配送信息提交
-    alert('Shipping details submitted');
-  };
-  
-  const submitPayment = () => {
-    // 處理付款信息提交
-    alert('Payment details submitted');
-  };
-  
-  const confirmOrder = () => {
-    // 處理確認訂單邏輯
-    
+  const confirmOrder = async () => {    // 處理確認訂單邏輯
+    /* 付款 */
+    /* new訂單 */
+    orderForm.value.uid = userStore.userInfo.uid;
+    orderForm.value.totalPrice = cartStore.cartStoreTotalPrice;
+    let oid = await newOrder(orderForm.value);
+    /* new訂單商品詳細 */
+    let itemOjb = [];
+    cartStore.items.forEach((item) => {
+      let data = {};
+      data.oid = oid;
+      data.pid = item.pid;
+      data.quantity = item.quantity;
+      itemOjb.push(data);
+    });
+    await newOrderItems(itemOjb);
+    /* 刪除購物車 */
+    await cartStore.cartStoreClearCart();
     alert('Order confirmed!');
+    router.push({name:"home"});
   };
 </script>
   

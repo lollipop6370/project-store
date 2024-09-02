@@ -100,6 +100,7 @@ const addToCart = async () => { // 添加到購物車邏輯
     if(await checkLogin()){//驗證token是否過期
       await cartStore.cartStoreAddItem(itemId,quantity.value);
       alert("已添加進購物車");
+      router.push({name:"home"});
     }
     else{//去登入
       router.push({name:"login"});
