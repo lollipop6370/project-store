@@ -1,3 +1,161 @@
 <template>
-    <div>1</div>
+  <div class="order-page">
+    <h2>Your Orders</h2>
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>Order#</th>
+                <th>Status</th>
+                <th>Price</th>
+                <th>Create Time</th>
+                <th>Detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(item, index) in orderItems" :key="index">
+                <td>{{ item.oid }}</td>
+                <td v-if="item.status === 0"> 處理中 </td>
+                <td v-else-if="item.status === 1"> 運送中 </td>
+                <td v-else-if="item.status === 2"> 已送達 </td>
+                <td>{{ item.totalPrice }}</td>
+                <td>{{ item.createTime }}</td>
+                <td>
+                    <button class="btn" @click="showOrderDetail(item.oid)">詳情</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- 懸浮視窗 -->
+    <div v-if="isItemModalOpen" class="modal-overlay" @click="closeItemModal">
+      <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
+        <h2>訂單明細</h2>
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item , index) in orderDetails" :key="index">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">Total</td>
+                    <td>{{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <button class="btn" @click="closeItemModal">確定</button>
+      </div>
+    </div>
+  </div>
 </template>
+
+<script setup>
+  import { onMounted, ref } from 'vue';
+  import { readOrder , getOrderDetail } from '@/api';
+
+  const orderItems = ref([
+    {
+        oid: 1,
+        status: 0,
+        totalPrice: 100,
+        createTime: ''
+    }
+  ]);
+  const orderDetails = ref([
+    {
+        name:'',
+        quantity:'',
+        price:''
+    }
+  ]);
+  const total = ref();
+  const isItemModalOpen = ref(false);
+
+  const showOrderDetail = async (oid) => {
+    orderDetails.value = await getOrderDetail(oid);
+    total.value = orderDetails.value.reduce( (sum, item) => sum + item.price , 0);
+    isItemModalOpen.value = true;
+  };
+  const closeItemModal = () => {
+    isItemModalOpen.value = false;
+  };
+
+  onMounted( async () => {
+    orderItems.value = await readOrder();
+  });
+</script>
+
+<style scoped>
+  .order-page {
+    position: relative;
+    top: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .order-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .order-table th {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #eaeaea;
+  }
+  .order-table td {
+    padding: 15px;
+    text-align: center; /* 確保所有表格內容居中 */
+    vertical-align: middle; /* 垂直居中 */
+    border: 1px solid #eaeaea;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 80px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .btn:hover {
+    background-color: #45a049;
+  }
+</style>

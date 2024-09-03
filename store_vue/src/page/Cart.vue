@@ -39,18 +39,15 @@
         <button class="checkout-button" @click="checkout">Proceed to Checkout</button>
       </div>
     </div>
-  </template>
+</template>
   
-  <script setup>
+<script setup>
   import { onMounted, computed } from 'vue';
   import { useRouter } from 'vue-router';
-  import { useUserStore } from '@/stores/userStore';
   import { useCartStore } from '@/stores/cartStore';
   import { onUpdated } from 'vue';
-  import { checkLogin } from '@/api';
 
   const cartStore = useCartStore();
-  const userStore = useUserStore();
   const router = useRouter();
   const cartItems = computed(() => {
     return cartStore.cartStoreTotalItems;
@@ -104,9 +101,9 @@
     // 這裡可以添加結帳邏輯
     router.push({ name:"checkout" });
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   .cart-page {
     position: relative;
     top: 40px;
@@ -191,5 +188,5 @@
   .checkout-button:hover {
     background-color: darkorange;
   }
-  </style>
+</style>
   

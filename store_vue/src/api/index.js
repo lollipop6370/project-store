@@ -182,7 +182,7 @@ export const backendProductImg = (file) => {
 }
 /**
  * 新增訂單
- * ->{ uid:int, totalPrice:int, address:String, city:String, postal:int, receiver:String }
+ * -> { uid:int, totalPrice:int, address:String, city:String, postal:int, receiver:String }
  * <- oid:int
  */
 export const newOrder = (obj) => {
@@ -190,9 +190,25 @@ export const newOrder = (obj) => {
 }
 /**
  * 新增訂單中的商品清單
- * ->陣列:[{ oid:int, pid:int, quantity:int }]
+ * -> 數組:[{ oid:int, pid:int, quantity:int }]
  * <- null
  */
 export const newOrderItems = (obj) => {
   return request.post("order/items",obj);
+}
+/**
+ * 讀取指定用戶所有訂單
+ * -> token:String(head)
+ * <- 數組:[{ oid:int, status:int, price:int, createTime:String }]
+ */
+export const readOrder = () => {
+  return request.get("order");
+}
+/**
+ * 讀取指定訂單的詳細資訊
+ * -> oid:int
+ * <- 數組:[{ name:String, quantity:int, price:int }]
+ */
+export const getOrderDetail = (oid) => {
+  return request.get("order/items",{params:{oid:oid}});
 }
