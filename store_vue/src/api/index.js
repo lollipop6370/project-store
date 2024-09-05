@@ -213,10 +213,42 @@ export const getOrderDetail = (oid) => {
   return request.get("order/items",{params:{oid:oid}});
 }
 /**
- * 後臺管理系統讀取全部訂單
+ * 後臺管理系統讀取訂單
  * -> { currentPage:int, pageSize:int }
  * <- 數組:[{ oid:int, uid:int, status:int, price:int, createTime:String, address:String, city:String, postal:int, reciver:String }]
  */
 export const getBEOrder = (pageInfo) => {
   return request.get("backend/order",{params:{currentPage:pageInfo.currentPage, pageSize:pageInfo.pageSize}});
+}
+/**
+ * 後臺管理系統讀取訂單裡item
+ * -> oid:int
+ * <- 數組:[{ name:String, quantity:int, price:int }]
+ */
+export const getBEOrderItems = (oid) => {
+  return request.get("backend/order/items",{params:{oid:oid}});
+}
+/**
+ * 後臺管理系統訂單狀態變更
+ * -> oid:int , status:int
+ * <- null
+ */
+export const editBEOrderStatus = (oid, status) => {
+  return request.put("backend/order",{oid:oid,status:status});
+}
+/**
+ * 查詢訂單總頁數
+ * -> pageSize:int
+ * <- totalPage:int
+ */
+export const getBEOrderCount = (pageSize) => {
+  return request.get("backend/order/totalPage",{params:{pageSize:pageSize}});
+}
+/**
+ * 查詢指定用戶訂單總頁數
+ * -> pageSize:int, token:String(head)
+ * <- totalPage:int
+ */
+export const getOrderCount = (pageSize) => {
+  return request.get("order/totalPage",{params:{pageSize:pageSize}});
 }

@@ -110,7 +110,7 @@
     }
   );
 
-  // 假設我們有一個 featuredProducts 的數據源
+  // 假設有一個 featuredProducts 的數據源
   const featuredProducts = ref([
     { fpId: 1, name: 'Product 1', price: '$29.99', image: 'path-to-image-1.jpg' ,type: 1},
     { fpId: 2, name: 'Product 2', price: '$39.99', image: 'path-to-image-2.jpg' ,type: 1},

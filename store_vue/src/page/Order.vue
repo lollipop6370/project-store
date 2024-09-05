@@ -54,12 +54,18 @@
         <button class="btn" @click="closeItemModal">確定</button>
       </div>
     </div>
+    <!-- 分頁 -->
+    <div class="pagination">
+      <button @click="previousPage" :disabled="pageInfo.currentPage === 1">上一頁</button>
+      <span>Page {{ pageInfo.currentPage }} of {{ pageInfo.totalPage }}</span>
+      <button @click="nextPage" :disabled="pageInfo.currentPage === pageInfo.totalPage">下一頁</button>
+    </div>
   </div>
 </template>
 
 <script setup>
   import { onMounted, ref } from 'vue';
-  import { readOrder , getOrderDetail } from '@/api';
+  import { readOrder , getOrderDetail, getOrderCount } from '@/api';
 
   const orderItems = ref([
     {
@@ -78,6 +84,13 @@
   ]);
   const total = ref();
   const isItemModalOpen = ref(false);
+  const pageInfo = ref(
+    {
+      currentPage: 1,
+      pageSize: 10,
+      totalPage: null
+    }
+  );
 
   const showOrderDetail = async (oid) => {
     orderDetails.value = await getOrderDetail(oid);
@@ -90,6 +103,7 @@
 
   onMounted( async () => {
     orderItems.value = await readOrder();
+    pageInfo.value.totalPage = await getOrderCount(pageInfo.value.pageSize);
   });
 </script>
 
@@ -157,5 +171,31 @@
   }
   .btn:hover {
     background-color: #45a049;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .pagination button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+
+  .pagination span {
+    padding: 10px 20px;
+    line-height: 20px;
   }
 </style>
