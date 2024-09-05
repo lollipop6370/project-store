@@ -69,6 +69,12 @@ const routes = [
     name: 'backend-user',
     meta: {showNavBar: false, showBEBar: true},
     component: () => import('@/page/backend/BEUser.vue')
+  },
+  {
+    path: '/backend/order',
+    name: 'backend-order',
+    meta: {showNavBar: false, showBEBar: true},
+    component: () => import('@/page/backend/BEOrder.vue')
   }
 ];
 

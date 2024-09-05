@@ -41,6 +41,7 @@
     selectUser.value = false;
     selectProduct.value = false;
     selectOrder.value = true;
+    router.push({name:"backend-order"});
   };
 </script>
   

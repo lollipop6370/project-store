@@ -212,3 +212,11 @@ export const readOrder = () => {
 export const getOrderDetail = (oid) => {
   return request.get("order/items",{params:{oid:oid}});
 }
+/**
+ * 後臺管理系統讀取全部訂單
+ * -> { currentPage:int, pageSize:int }
+ * <- 數組:[{ oid:int, uid:int, status:int, price:int, createTime:String, address:String, city:String, postal:int, reciver:String }]
+ */
+export const getBEOrder = (pageInfo) => {
+  return request.get("backend/order",{params:{currentPage:pageInfo.currentPage, pageSize:pageInfo.pageSize}});
+}
