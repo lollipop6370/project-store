@@ -1,20 +1,6 @@
 
 import request from "../utils/request/"
 
-/* 查詢總商品數量 
-送給後端-> null
-送回前端<- {totalProduct:int}
-*/
-export const getProductCount = () => {
-  return request.get("home/productCount");
-};
-/* 查詢所有normal商品  
--> info:{ currentPage:int , pageSize:int } 
-<- {id:int,name:String,price:double,image:String,type:int}
-*/
-export const getNMProduct = (info) => {
-  return request.post("home/nmProductByPage",info);
-};
 /* 註冊 
 -> user:{username:String , email:String , password:String} 
 <- null
@@ -251,4 +237,28 @@ export const getBEOrderCount = (pageSize) => {
  */
 export const getOrderCount = (pageSize) => {
   return request.get("order/totalPage",{params:{pageSize:pageSize}});
+}
+/**
+ * 讀取所有商品總類
+ * -> null
+ * <- 數組:[string]
+ */
+export const getProductType = () => {
+  return request.get("home/productType");
+}
+/**
+ * 使用過濾器查詢商品
+ * -> type:string, priceRange:int, currentPage:int, pageSize:int
+ * <- 數組:[{ pid:int, name:string, price:int, image:String, type:int}]
+ */
+export const getProductByFilter = (type,priceRange,pageInfo) => {
+  return request.get("home/filter",{params:{type:type+'',priceRange:priceRange,currentPage:pageInfo.currentPage,pageSize:pageInfo.pageSize}});
+}
+/**
+ * 使用過濾器查詢商品的數量
+ * -> type:string, priceRange:int
+ * <- totalPage:int
+ */
+export const getProductByFilterCount = (type,priceRange,pageSize) => {
+  return request.get("home/filterCount",{params:{type:type+'',priceRange:priceRange,pageSize:pageSize}});
 }

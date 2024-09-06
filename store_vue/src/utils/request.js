@@ -33,6 +33,7 @@ service.interceptors.response.use(
         else if (response.data.code == 503) return  alert("密碼錯誤")
         else if (response.data.code == 504) return  alert("登入已過期")
         else if (response.data.code == 505) return  alert("用戶名已被使用")
+        else if(response.data.code == 506) return alert(response.data.message)
       } else {
         console.log(response.data);
         return response.data.data; // 200:成功 ，返回數據

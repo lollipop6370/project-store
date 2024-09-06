@@ -34,7 +34,7 @@
           <label>Product Type</label>
           <div class="checkbox-group">
             <label v-for="type in productTypes" :key="type">
-              <input type="checkbox" :value="type" v-model="selectedTypes" />
+              <input type="checkbox" :value="type" v-model="st" />
               {{ type }}
             </label>
           </div>
@@ -53,8 +53,8 @@
 
         <div class="filter-group">
           <label for="price">Price Range</label>
-          <input type="range" id="price" v-model="priceRange" min="0" max="100" />
-          <span>{{ priceRange }}</span>
+          <input type="range" id="price" v-model="pr" min="0" max="100000" />
+          <span>{{ pr }}</span>
         </div>
 
         <div class="filter-group">
@@ -89,18 +89,19 @@
   
 <script setup>
   import { ref , onMounted} from 'vue';
-  import { getProductCount, getNMProduct } from "../api/index"
+  import {  getProductType, getProductByFilter, getProductByFilterCount } from "../api/index"
   import { useRouter } from 'vue-router';
   import { useUserStore } from '@/stores/userStore';
   import { useCartStore } from '@/stores/cartStore';
+
   const userStore = useUserStore();
   const cartStore = useCartStore();
   const router = useRouter();
-  const priceRange = ref(100);
-
+  const pr = ref(10000);
+  const st = ref([]);
+  const priceRange = ref(100000);
   const selectedTypes = ref([]);  // 追蹤選中的商品類型
   const productTypes = ref(['Electronics', 'Fashion', 'Home', 'Beauty', 'Toys']); // 商品類型選項
-  const totalProduct_c = ref(0);
   const totalPages = ref(0);
 
   const pageInfo = ref(
@@ -125,39 +126,39 @@
 
 
   const paginatedProducts = async () => { //從後端取出並更新 normal product 列表
-    let result = await getNMProduct(pageInfo.value);
+    totalPages.value = await getProductByFilterCount(selectedTypes.value,priceRange.value,pageInfo.value.pageSize);
+    let result = await getProductByFilter(selectedTypes.value,priceRange.value,pageInfo.value);
     normalProduct.value = result;
   };
 
-  const totalProduct = async () => {
-    totalProduct_c.value = await getProductCount(); //從後端取出總商品數量
-    totalPages.value = Math.ceil(totalProduct_c.value / pageInfo.value.pageSize);//總數量除每頁數量，並無條件進位，即總頁數
+  const previousPage = () => {
+    if (pageInfo.value.currentPage > 1) {
+      pageInfo.value.currentPage--;
+      paginatedProducts();
+    }
   };
 
-const previousPage = () => {
-  if (pageInfo.value.currentPage > 1) {
-    pageInfo.value.currentPage--;
-    paginatedProducts();
-  }
-};
-
-const nextPage = () => {
-  if (pageInfo.value.currentPage < totalPages.value) {
-    pageInfo.value.currentPage++;
-    paginatedProducts();
-  }
-};
-
-  const applyFilters = () => {
-    // Apply filters logic (already handled by computed property)
+  const nextPage = () => {
+    if (pageInfo.value.currentPage < totalPages.value) {
+      pageInfo.value.currentPage++;
+      paginatedProducts();
+    }
   };
-const productClick = (pid) =>{ //當商品被點擊時，路由至商品詳情並傳是哪個塗片傳的參數
-  router.push({ name:"productDetail" , query : { pid:pid }});
-}
+
+  const applyFilters = async () => {
+    priceRange.value = pr.value;
+    selectedTypes.value = st.value;
+    pageInfo.value.currentPage = 1;
+    paginatedProducts();
+  };
+
+  const productClick = (pid) =>{ //當商品被點擊時，路由至商品詳情並傳是哪個塗片傳的參數
+    router.push({ name:"productDetail" , query : { pid:pid }});
+  }
   // 組件掛載時調用(生命週期)
-  onMounted(() => {
+  onMounted( async () => {
     paginatedProducts();
-    totalProduct();
+    productTypes.value = await getProductType();
     if(userStore.getUserStoreLogin === true){   //如果用戶有登入
       cartStore.cartStoreReload();
     }
@@ -220,90 +221,90 @@ const productClick = (pid) =>{ //當商品被點擊時，路由至商品詳情�
     transform: translateY(-5px);
   }
   /* 過濾器與過濾後產品列表的佈局 */
-.product-section {
-  display: flex;
-}
+  .product-section {
+    display: flex;
+  }
 
-.product-filter {
-  width: 250px;
-  height: 1500px;
-  padding: 60px;
-  background-color: #f4f4f4;
-  border-right: 1px solid #ddd;
-}
+  .product-filter {
+    width: 250px;
+    height: 1500px;
+    padding: 60px;
+    background-color: #f4f4f4;
+    border-right: 1px solid #ddd;
+  }
 
-.filtered-products {
-  flex-grow: 1;
-  padding: 20px;
-}
+  .filtered-products {
+    flex-grow: 1;
+    padding: 20px;
+  }
 
-.products-grid {
+  .products-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-}
+  }
 
-.product-card {
-  flex: 1 1 calc(33.333% - 20px);
-  background-color: white;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  text-align: center;
-  transition: transform 0.3s ease;
-  height: 300px;
-  width: 300px;
-}
-.product-card:hover {
+  .product-card {
+    flex: 1 1 calc(33.333% - 20px);
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    height: 300px;
+    width: 300px;
+  }
+  .product-card:hover {
     transform: translateY(-5px);
-}
+  }
 
-.checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-.selected-types {
-  margin-top: 15px;
-}
+  .selected-types {
+    margin-top: 15px;
+  }
 
-.selected-types span {
-  display: inline-block;
-  background-color: #eaeaea;
-  padding: 5px 10px;
-  margin-right: 5px;
-  border-radius: 5px;
-}
+  .selected-types span {
+    display: inline-block;
+    background-color: #eaeaea;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+  }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
 
-.pagination button {
-  padding: 10px 20px;
-  margin: 0 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+  .pagination button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-.pagination button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
+  .pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
 
-.pagination span {
-  padding: 10px 20px;
-  line-height: 20px;
-}
+  .pagination span {
+    padding: 10px 20px;
+    line-height: 20px;
+  }
 
-.can-click{
-  cursor: pointer;
-}
+  .can-click{
+    cursor: pointer;
+  }
 </style>
   
