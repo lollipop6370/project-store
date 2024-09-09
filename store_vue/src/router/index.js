@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../page/Home.vue';
 import { checkLogin } from '@/api';
 import { useUserStore } from '@/stores/userStore';
+import { useRootStore } from '@/stores/rootStore';
 
 const routes = [
   {
@@ -47,7 +48,7 @@ const routes = [
     component: () => import('@/page/Order.vue')
   },
   {
-    path: '/backend/login',
+    path: '/backend',
     name: 'backend-login',
     meta: {showNavBar: false, showBEBar: false},
     component: () => import('@/page/backend/BELogin.vue')
@@ -98,6 +99,21 @@ router.beforeEach(async (to, from) => {    //全局守衛
     else{
       alert("please login!")
       return {name:"login"};
+    }
+  }
+  if (to.name === 'backend-order' | to.name === 'backend-user' | to.name === 'backend-product'){
+    let rootStore = useRootStore();
+    if(rootStore.isLogin){
+      return true;
+    }
+    else{
+      return {name:"backend-login"};
+    }
+  }
+  if(to.name === 'backend-login'){
+    let rootStore = useRootStore();
+    if(rootStore.isLogin){
+      return {name:"backend-home"};
     }
   }
 });

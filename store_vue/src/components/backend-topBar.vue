@@ -3,7 +3,9 @@
       <header class="header">
         <!-- 上方固定橫條內容 -->
         <h1>後臺管理系統</h1>
-        <div class="user-info">登出</div>
+        <div class="user-info">歡迎老闆{{ rootStore.rootname }} | 
+          <a @click="logout">登出</a>
+        </div>
       </header>
       <div class="container">
         <div class="sidebar">
@@ -21,6 +23,8 @@
 <script setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
+  import { useRootStore } from '@/stores/rootStore';
+  const rootStore = useRootStore();
   const router = useRouter();
   const selectUser = ref(false);
   const selectProduct = ref(false);
@@ -42,6 +46,13 @@
     selectProduct.value = false;
     selectOrder.value = true;
     router.push({name:"backend-order"});
+  };
+
+  const logout = () => {
+    rootStore.isLogin = false;
+    rootStore.rootname = '';
+    rootStore.token = '';
+    router.push({name:"backend-login"});
   };
 </script>
   

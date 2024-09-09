@@ -27,15 +27,23 @@
   import { ref } from 'vue';
   import { backendLogin } from '@/api';
   import { useRouter } from 'vue-router';
+  import { useRootStore } from '@/stores/rootStore';
   const router = useRouter();
   const username = ref();
   const password = ref();
+  const rootStore = useRootStore();
 
   const handleLogin = async () => {
     // 處理登入邏輯
     let result = await backendLogin(username.value, password.value);
-    if(result === true)
-        router.push({name:"backend-home"});
+    if(result === true){
+      rootStore.isLogin = true;
+      rootStore.rootname = username.value;
+      router.push({name:"backend-home"});
+    }
+    else{
+      //alert("login false");
+    }
   }
 
 </script>
