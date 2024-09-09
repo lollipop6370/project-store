@@ -51,10 +51,6 @@
                 <input type="file" id="image" accept="image/gif, image/jpeg, image/png" @change="onFileChange" required>
             </div>
             <div class="input-group">
-                <label for="pid">pid</label>
-                <input type="int" id="pid" v-model="formData.pid" required>
-            </div>
-            <div class="input-group">
                 <label for="name">商品名</label>
                 <input type="text" id="name" v-model="formData.name" required>
             </div>

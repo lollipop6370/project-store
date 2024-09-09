@@ -51,5 +51,15 @@ export const useUserStore = defineStore('user', {
          }
          this.userInfo.isLoggedIn = check;
       },
+    },
+    persist:{
+      enabled:true,
+      // 可選：指定儲存方式，localStorage 或 sessionStorage
+      strategies: [
+        {
+          storage: localStorage, // 或者 sessionStorage
+          paths: ['uid', 'username', 'isLoggedIn'],
+        },
+      ],
     }
 });

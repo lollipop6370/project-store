@@ -3,7 +3,7 @@
       <header class="header">
         <!-- 上方固定橫條內容 -->
         <h1>後臺管理系統</h1>
-        <div class="user-info">用戶名 | 設置 | 登出</div>
+        <div class="user-info">登出</div>
       </header>
       <div class="container">
         <div class="sidebar">

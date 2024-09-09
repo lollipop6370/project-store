@@ -10,7 +10,7 @@
     display: flex;
     font-size: 60px;
     position: absolute;
-    left: 400px;
+    left: 600px;
     top: 200px;
 }
 </style>
