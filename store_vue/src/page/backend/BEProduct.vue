@@ -26,7 +26,10 @@
                 <label for="type">商品總類</label>
                 <input type="int" id="type" v-model="formData.type" required>
             </div>
-            
+            <div class="input-group">
+                <label for="count">商品數量</label>
+                <input type="int" id="count" v-model="formData.count" required>
+            </div>
             <button class="btn-config" type="submit">確定</button>
             <button class="btn-cancel" @click="closeModal">取消</button>
         </form>
@@ -62,7 +65,10 @@
                 <label for="type">商品總類</label>
                 <input type="int" id="type" v-model="formData.type" required>
             </div>
-            
+            <div class="input-group">
+                <label for="count">商品數量</label>
+                <input type="int" id="count" v-model="formData.count" required>
+            </div>
             <button class="btn-config" type="submit">確定</button>
             <button class="btn-cancel" @click="closeNewModal">取消</button>
         </form>
@@ -75,7 +81,7 @@
   import DynamicTable from '@/components/DynamicTable.vue';
   import { backendProduct , backendProductPage , backendProductEdit , backendProductDel , backendProductImg } from '@/api';
   import { onMounted, ref } from 'vue';
-  const tableHeaders = ref(['image', 'pid', 'name', 'price', 'type', 'edit / delete']);
+  const tableHeaders = ref(['image', 'pid', 'name', 'price', 'type', 'count', 'edit / delete']);
   const tableData = ref([
         ['John', 28, '工程師'],
         ['Jane', 32, '設計師'],
@@ -96,6 +102,7 @@
     name: "",
     price: null,
     type: null,
+    count: null,
     image: ""
   });
   const init = async() => {  //初始化載入商品
@@ -104,7 +111,7 @@
     tableData.value = [];
     for(let i = 0; i < data.length; i++){
         tableImgData.value.push(data[i].image);
-        let d = [data[i].pid, data[i].name, data[i].price, data[i].type];
+        let d = [data[i].pid, data[i].name, data[i].price, data[i].type, data[i].count];
         tableData.value.push(d);
     }
   };
@@ -123,6 +130,7 @@
     formData.value.name = row[1];
     formData.value.price = row[2];
     formData.value.type = row[3];
+    formData.value.count = row[4];
     isEditModalOpen.value = true;
   };
   const handleSubmit = async () => {    //送出編輯
@@ -136,6 +144,7 @@
     formData.value.name = row[1];
     formData.value.price = row[2];
     formData.value.type = row[3];
+    formData.value.count = row[4];
     isDelModalOpen.value = true;
   };
   const checkdel = async () => {    //送出刪除
@@ -157,6 +166,7 @@
     formData.value.name = "";
     formData.value.price = null;
     formData.value.type = null;
+    formData.value.count = null;
     isNewModalOpen.value = true;
   };
   const onFileChange = (even) => {  //保存選擇的圖片

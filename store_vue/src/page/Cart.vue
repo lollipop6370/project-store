@@ -81,7 +81,7 @@
       
     }else{
       //store刪除項目
-      await cartStore.cartStoreRemoveItem(item.pid);
+      await cartStore.cartStoreRemoveItem(item.pid , -1);
     }
     
   };
@@ -93,7 +93,7 @@
   
   const removeItem = async (item) => {
     //後端資料庫刪除該購買項目
-    await cartStore.cartStoreRemoveItem(item.pid);
+    await cartStore.cartStoreRemoveItem(item.pid , item.quantity);
     
   };
   

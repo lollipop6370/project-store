@@ -144,7 +144,7 @@ export const backendProductPage = (pageSize) => {
 }
 /**
  * 編輯商品
- * -> formData:{ id:int, name:String, price:int, type:int, image:string }
+ * -> formData:{ id:int, name:String, price:int, type:int, count:int, image:string }
  * <- null
  */
 export const backendProductEdit = (product) => {
@@ -261,4 +261,12 @@ export const getProductByFilter = (type,priceRange,pageInfo) => {
  */
 export const getProductByFilterCount = (type,priceRange,pageSize) => {
   return request.get("home/filterCount",{params:{type:type+'',priceRange:priceRange,pageSize:pageSize}});
+}
+/**
+ * 使用者拉進購物車時，可買商品數量增減
+ * -> itemId:int, count:int
+ * <- null
+ */
+export const productCountEdit = (itemId,count) => {
+  return request.put("cart/productCount",{pid:itemId,count:count});
 }

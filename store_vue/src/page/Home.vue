@@ -9,19 +9,6 @@
         <button class="cta-button">Shop Now</button>
       </div>
     </section>
-  
-    <!-- 特色產品區域 -->
-    <section class="featured-products">
-      <h2>Featured Products</h2>
-      <div class="featured-products-grid">
-        <!-- 假設有多個產品卡片 -->
-        <div class="featured-product-card" v-for="product in featuredProducts" :key="product.fpId">
-          <img :src="product.image" :alt="product.name" />
-          <h3>{{ product.name }}</h3>
-          <p>{{ product.price }}</p>
-        </div>
-      </div>
-    </section>
 
     <!-- 產品過濾區域和過濾後產品列表 -->
     <section class="product-section">
@@ -58,7 +45,7 @@
         </div>
 
         <div class="filter-group">
-          <button @click="applyFilters">Apply Filters</button>
+          <button @click="applyFilters">搜尋</button>
         </div>
       </aside>
 
@@ -107,17 +94,9 @@
   const pageInfo = ref(
     {
         currentPage : 1,
-        pageSize : 8
+        pageSize : 12
     }
   );
-
-  // 假設有一個 featuredProducts 的數據源
-  const featuredProducts = ref([
-    { fpId: 1, name: 'Product 1', price: '$29.99', image: 'path-to-image-1.jpg' ,type: 1},
-    { fpId: 2, name: 'Product 2', price: '$39.99', image: 'path-to-image-2.jpg' ,type: 1},
-    { fpId: 3, name: 'Product 3', price: '$49.99', image: 'path-to-image-3.jpg' ,type: 2},
-    { fpId: 4, name: 'Product 4', price: '$59.99', image: 'path-to-image-4.jpg' ,type: 3}
-  ]);
 
   const normalProduct = ref([
     {pid: 1, name: 'Product a',price: '$9.99', image: '111' ,type: 1},
@@ -196,18 +175,6 @@
   
   .cta-button:hover {
     background-color: darkorange;
-  }
-  
-  /* 特色產品區域的樣式 */
-  .featured-products {
-    padding: 50px 20px;
-    text-align: center;
-  }
-  
-  .featured-products-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
   }
   
   .featured-product-card {
