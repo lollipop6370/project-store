@@ -22,9 +22,9 @@
         <button type="submit" class="register-button">Register</button>
       </form>
     </div>
-  </template>
+</template>
   
-  <script setup>
+<script setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router'
   import { userRegister , checkUsername } from '@/api';
@@ -46,15 +46,15 @@
       password.value.length >= 8      // 密碼長度至少8個字符
     ];
 
-  const strength = strengthCriteria.reduce((acc, curr) => acc + curr, 0);
+    const strength = strengthCriteria.reduce((acc, curr) => acc + curr, 0);
 
-  if (strength <= 2) {
-    passwordStrength.value = 'weak';
-  } else if (strength === 3 || strength === 4) {
-    passwordStrength.value = 'medium';
-  } else if (strength === 5) {
-    passwordStrength.value = 'strong';
-  }
+    if (strength <= 2) {
+      passwordStrength.value = 'weak';
+    } else if (strength === 3 || strength === 4) {
+      passwordStrength.value = 'medium';
+    } else if (strength === 5) {
+      passwordStrength.value = 'strong';
+    }
   };
 
   const registerUser = async () => {
@@ -83,9 +83,9 @@
     alert('註冊成功');
     router.push({ name: "login" });
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   .register-page {
     position: relative;
     top: 200px;
@@ -153,7 +153,5 @@
   .register-button:hover {
     background-color: darkorange;
   }
-
-
-  </style>
+</style>
   

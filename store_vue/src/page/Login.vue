@@ -13,9 +13,9 @@
         <button type="submit" class="login-button">Login</button>
       </form>
     </div>
-  </template>
+</template>
   
-  <script setup>
+<script setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router'
   import { useUserStore } from '@/stores/userStore';
@@ -41,9 +41,9 @@
     
     
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   .login-page {
     position: relative;
     top: 200px;
@@ -93,5 +93,5 @@
   .login-button:hover {
     background-color: darkorange;
   }
-  </style>
+</style>
   

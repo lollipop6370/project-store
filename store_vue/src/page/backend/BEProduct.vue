@@ -192,114 +192,114 @@
 </script>
 
 <style scoped>
-.use-table {
+  .use-table {
     position: relative;
     width: 1500px;
     top: 100px;
     left: 300px;
-}
+  }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
 
-.pagination button {
-  padding: 10px 20px;
-  margin: 0 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+  .pagination button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-.pagination button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
+  .pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
 
-.pagination span {
-  padding: 10px 20px;
-  line-height: 20px;
-}
+  .pagination span {
+    padding: 10px 20px;
+    line-height: 20px;
+  }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1100;
-}
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+  }
 
-.modal-content {
-  background-color: white;
-  padding: 80px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-  width: 400px;
-  max-width: 90%;
-  text-align: center;
-}
+  .modal-content {
+    background-color: white;
+    padding: 80px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+  }
 
-.input-group {
-  margin-bottom: 15px;
-}
+  .input-group {
+    margin-bottom: 15px;
+  }
 
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-}
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
 
-.input-group input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
+  .input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 
-.btn-config {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.btn-config:hover {
-  background-color: #45a049;
-}
+  .btn-config {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .btn-config:hover {
+    background-color: #45a049;
+  }
 
-.btn-cancel {
-  padding: 10px 20px;
-  background-color: #b8bdb5;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.btn-cancel:hover {
-  background-color: #cdd6c7;
-}
+  .btn-cancel {
+    padding: 10px 20px;
+    background-color: #b8bdb5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .btn-cancel:hover {
+    background-color: #cdd6c7;
+  }
 
-.btnNew {
-  padding: 5px 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-.btnNew:hover {
-  background-color: #45a049;
-}
+  .btnNew {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .btnNew:hover {
+    background-color: #45a049;
+  }
 </style>
