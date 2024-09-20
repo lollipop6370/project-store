@@ -43,7 +43,7 @@
     name: 'Simple Stylish Women Backpack',
     price: 555,
     reviews: 4,
-    description: 'Typi non habent claritatem insitam est usus...',
+    description: '',
   });
   const quantity = ref(1); // 預設選擇的數量
   const itemId = route.query.pid;

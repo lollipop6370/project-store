@@ -49,6 +49,7 @@
     console.log(userStore.isLoggedIn)
     console.log(userStore.uid)
     console.log(userStore.getUserStoreToken)
+    router.push({name:"home"});
   };
   const orderClick = async () => {
     await userStore.userStoreCheckLogin();
@@ -116,6 +117,7 @@
   .icon {
     font-size: 20px;
     color: #333;
+    cursor: pointer;
     position: relative;
   }
 

@@ -53,44 +53,40 @@
           </div>
         </form>
       </div>
-  
-      <!-- 付款方式 -->
-      <div class="payment-method">
-        <h3>Payment Method</h3>
-        <form @submit.prevent="submitPayment">
-          <div class="form-group">
-            <label for="cardNumber">Card Number</label>
-            <input type="text" id="cardNumber" v-model="payment.cardNumber" required />
-          </div>
-          <div class="form-group">
-            <label for="expiry">Expiry Date</label>
-            <input type="text" id="expiry" v-model="payment.expiry" required />
-          </div>
-          <div class="form-group">
-            <label for="cvv">CVV</label>
-            <input type="text" id="cvv" v-model="payment.cvv" required />
-          </div>
-        </form>
-      </div>
-  
       <!-- 確認訂單按鈕 -->
       <div class="checkout-section">
         <button class="checkout-button" @click="confirmOrder">Confirm Order</button>
+      </div>
+
+      <!-- form post 請求跳轉藍新金流 -->
+      <div v-if="isPayOpen" class="modal-overlay" @click="closePayModal">
+        <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
+          <h2>即將跳轉藍新金流結帳</h2>
+          <form method="POST" action="https://ccore.newebpay.com/MPG/mpg_gateway">
+            <input type="hidden" name="MerchantID" :value="myPayment.MerchantID">
+            <input type="hidden" name="TradeInfo" :value="myPayment.TradeInfo">
+            <input type="hidden" name="TradeSha" :value="myPayment.TradeSha">
+            <input type="hidden" name="Version" :value="myPayment.Version">
+            <input type="submit" value="前往結帳">
+          </form>
+        </div>
       </div>
     </div>
 </template>
   
 <script setup>
+  import axios from "axios";
   import { ref, computed } from 'vue';
   import { useCartStore } from '@/stores/cartStore';
   import { useUserStore } from '@/stores/userStore';
-  import { newOrder , newOrderItems } from '@/api';
+  import { newOrder , newOrderItems , createPayment } from '@/api';
   import router from '@/router';
   
   const cartStore = useCartStore();
   const userStore = useUserStore();
 
   const cartItems = ref(cartStore.items);
+  const isPayOpen = ref(false);
   
   const orderForm = ref({
     receiver: '',
@@ -98,11 +94,12 @@
     city: '',
     postal: null,
   });
-  
-  const payment = ref({
-    cardNumber: '',
-    expiry: '',
-    cvv: '',
+
+  const myPayment = ref({
+    MerchantID: '',
+    TradeInfo: '',
+    TradeSha: '',
+    Version: ''
   });
   
   const orderTotal = computed(() => {
@@ -115,6 +112,7 @@
     orderForm.value.uid = userStore.userInfo.uid;
     orderForm.value.totalPrice = cartStore.cartStoreTotalPrice;
     let oid = await newOrder(orderForm.value);
+    orderForm.value.oid = oid;
     /* new訂單商品詳細 */
     let itemOjb = [];
     cartStore.items.forEach((item) => {
@@ -127,7 +125,31 @@
     await newOrderItems(itemOjb);
     /* 刪除購物車 */
     await cartStore.cartStoreClearCart();
-    alert('Order confirmed!');
+    /* 加密訂單資訊 */
+    myPayment.value = await createPayment(orderForm.value);
+    isPayOpen.value = true;
+    /* 向金流服務API發送請求 */
+    /*const params = new URLSearchParams();
+    params.append('MerchantID', myPayment.value.MerchantID);
+    params.append('TradeInfo', myPayment.value.TradeInfo);
+    params.append('TradeSha', myPayment.value.TradeSha);
+    params.append('Version', myPayment.value.Version);
+    axios.post('https://cors-anywhere.herokuapp.com/https://ccore.newebpay.com/MPG/mpg_gateway', params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('API Error:', error);
+    });*/
+    //alert('Order confirmed!');
+    //router.push({name:"home"});
+  };
+
+  const closePayModal = () => {
     router.push({name:"home"});
   };
 </script>
@@ -147,8 +169,7 @@
   }
   
   .order-summary,
-  .shipping-address,
-  .payment-method {
+  .shipping-address {
     margin-bottom: 30px;
   }
   
@@ -197,6 +218,29 @@
   
   .checkout-button:hover {
     background-color: darkorange;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
   }
 </style>
   

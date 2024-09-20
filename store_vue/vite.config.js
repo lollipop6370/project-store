@@ -9,11 +9,11 @@ export default defineConfig({
     vue(),
   ],
   server:{
-    port:8001,
+    port:80,
     open:true,
     proxy: {
       '/app-dev': {
-        target: 'http://localhost:8080/',
+        target: 'http://34.44.233.80:8002/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/app-dev/, '')
       }

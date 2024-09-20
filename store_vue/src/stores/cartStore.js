@@ -4,21 +4,8 @@ import { getUserCart , updateBackendCart , newBackendCart , deleteBackendCart , 
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
-    items: [{
-      pid: 5,
-      image: 'path-to-image1.jpg',
-      name: 'T Shirt For Men',
-      price: 130.0,
-      quantity: 1,
-    },
-    {
-      pid: 3,
-      image: 'path-to-image2.jpg',
-      name: 'Red Scarf For Women',
-      price: 120.5,
-      quantity: 1,
-    }],
-    itemsCount: 2,
+    items: [{}],
+    itemsCount: 0,
   }),
   getters: {
     cartStoreTotalPrice: (state) => {  //購物車所有商品價格總和

@@ -13,7 +13,7 @@
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id="password" v-model="regist.password" @input="checkPasswordStrength" required />
-          <p class="password-strength" :class="passwordStrength">{{ passwordStrength }}</p>
+          <p class="password-strength" :class="passwordStrength">密碼強度 : {{ passwordStrength }}</p>
         </div>
         <div class="form-group">
           <label for="confirmPassword">Confirm Password</label>
@@ -34,16 +34,16 @@
   const passwordStrength = ref('weak');  // 密碼強度: weak, medium, strong
   
   const regist = ref(
-    {username : "zxcv1234", email : "1111@gmail.com", password : "123456"}
+    {username : "", email : "", password : ""}
   );
 
   const checkPasswordStrength = () => {
     const strengthCriteria = [
-      /[a-z]/.test(password.value),  // 至少有一個小寫字母
-      /[A-Z]/.test(password.value),  // 至少有一個大寫字母
-      /[0-9]/.test(password.value),  // 至少有一個數字
-      /[\W_]/.test(password.value),  // 至少有一個特殊字符
-      password.value.length >= 8      // 密碼長度至少8個字符
+      /[a-z]/.test(regist.value.password),  // 至少有一個小寫字母
+      /[A-Z]/.test(regist.value.password),  // 至少有一個大寫字母
+      /[0-9]/.test(regist.value.password),  // 至少有一個數字
+      /[\W_]/.test(regist.value.password),  // 至少有一個特殊字符
+      regist.value.password.length >= 8      // 密碼長度至少8個字符
     ];
 
     const strength = strengthCriteria.reduce((acc, curr) => acc + curr, 0);

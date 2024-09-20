@@ -76,6 +76,12 @@ const routes = [
     name: 'backend-order',
     meta: {showNavBar: false, showBEBar: true},
     component: () => import('@/page/backend/BEOrder.vue')
+  },
+  {
+    path: '/payFeedBack',
+    name: 'payFeedBack',
+    meta: {showNavBar: false, showBEBar: false},
+    component: () => import('@/page/PayFeedBack.vue')
   }
 ];
 

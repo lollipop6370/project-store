@@ -9,6 +9,7 @@
                 <th>Price</th>
                 <th>Create Time</th>
                 <th>Detail</th>
+                <th>Pay</th>
             </tr>
         </thead>
         <tbody>
@@ -22,10 +23,15 @@
                 <td>
                     <button class="btn" @click="showOrderDetail(item.oid)">詳情</button>
                 </td>
+                <td v-if="item.pay === 0">
+                  <button @click="onPay(item)">付款</button>
+                  <button @click="onOrderDel(item.oid)">刪單</button>
+                </td>
+                <td v-if="item.pay === 1">付款完成</td>
             </tr>
         </tbody>
     </table>
-    <!-- 懸浮視窗 -->
+    <!-- 商品詳細懸浮視窗 -->
     <div v-if="isItemModalOpen" class="modal-overlay" @click="closeItemModal">
       <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
         <h2>訂單明細</h2>
@@ -54,6 +60,27 @@
         <button class="btn" @click="closeItemModal">確定</button>
       </div>
     </div>
+    <!-- 刪除訂單視窗 -->
+    <div v-if="isOrderDelModalOpen" class="modal-overlay" @click="closeOrderDelModal">
+      <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
+        <h2>刪除訂單#{{ selectOid }}?</h2>
+        <button class="btn" @click="confirmDelOrderModal">確定</button>
+      </div>
+    </div>
+    <!-- 付款按鈕 -->
+    <div v-if="isPayModalOpen" class="modal-overlay" @click="closePayModal">
+      <div class="modal-content" @click.stop>
+        <h2>即將跳轉藍新金流結帳</h2>
+        <div>測試卡號 : 4000-2211-1111-1111</div>
+        <form method="POST" action="https://ccore.newebpay.com/MPG/mpg_gateway">            
+          <input type="hidden" name="MerchantID" :value="myPayment.MerchantID">
+          <input type="hidden" name="TradeInfo" :value="myPayment.TradeInfo">
+          <input type="hidden" name="TradeSha" :value="myPayment.TradeSha">
+          <input type="hidden" name="Version" :value="myPayment.Version">
+          <input type="submit" value="前往結帳">
+        </form>
+      </div>
+    </div>
     <!-- 分頁 -->
     <div class="pagination">
       <button @click="previousPage" :disabled="pageInfo.currentPage === 1">上一頁</button>
@@ -65,14 +92,15 @@
 
 <script setup>
   import { onMounted, ref } from 'vue';
-  import { readOrder , getOrderDetail, getOrderCount } from '@/api';
+  import { readOrder , getOrderDetail, getOrderPageCount, delOrder, createPayment } from '@/api';
 
   const orderItems = ref([
     {
         oid: 1,
         status: 0,
         totalPrice: 100,
-        createTime: ''
+        createTime: '',
+        pay: 0
     }
   ]);
   const orderDetails = ref([
@@ -84,6 +112,7 @@
   ]);
   const total = ref();
   const isItemModalOpen = ref(false);
+  const isOrderDelModalOpen = ref(false);
   const pageInfo = ref(
     {
       currentPage: 1,
@@ -91,7 +120,7 @@
       totalPage: null
     }
   );
-
+ 
   const showOrderDetail = async (oid) => {
     orderDetails.value = await getOrderDetail(oid);
     total.value = orderDetails.value.reduce( (sum, item) => sum + item.price , 0);
@@ -100,10 +129,51 @@
   const closeItemModal = () => {
     isItemModalOpen.value = false;
   };
-
+  /* 刪除訂單 */
+  const selectOid = ref();
+  const onOrderDel = (oid) => {
+    selectOid.value = oid;
+    isOrderDelModalOpen.value = true;
+  };
+  const closeOrderDelModal = () => {
+    selectOid.value = null;
+    isOrderDelModalOpen.value = false;
+  };
+  const confirmDelOrderModal = async () => {
+    await delOrder(selectOid.value);
+    selectOid.value = null;
+    isOrderDelModalOpen.value = false;
+    location.reload();
+  };
+  /* 前往付款 */
+  const myPayment = ref(
+    {
+      MerchantID: '',
+      TradeInfo: '',
+      TradeSha: '',
+      Version: ''
+    }
+  );
+  const isPayModalOpen = ref(false);
+  const onPay = async (order) =>{
+    myPayment.value = await createPayment(order);
+    isPayModalOpen.value = true;
+  };
+  const closePayModal = () => {
+    isPayModalOpen.value = false;
+  };
+  /* 分頁 */
+  const previousPage = async () => {
+    pageInfo.value.currentPage --;
+    orderItems.value = await readOrder(pageInfo.value.currentPage,pageInfo.value.pageSize);
+  };
+  const nextPage = async () => {
+    pageInfo.value.currentPage ++;
+    orderItems.value = await readOrder(pageInfo.value.currentPage,pageInfo.value.pageSize);
+  };
   onMounted( async () => {
-    orderItems.value = await readOrder();
-    pageInfo.value.totalPage = await getOrderCount(pageInfo.value.pageSize);
+    orderItems.value = await readOrder(pageInfo.value.currentPage,pageInfo.value.pageSize);
+    pageInfo.value.totalPage = await getOrderPageCount(pageInfo.value.pageSize);
   });
 </script>
 

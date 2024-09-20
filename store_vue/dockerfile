@@ -7,8 +7,8 @@ COPY ./dist /usr/share/nginx/html
 # 拷貝自訂的 Nginx 配置文件（如果有需要自訂的配置）
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-# 暴露容器內部的 8001 端口
-EXPOSE 8001
+# 暴露容器內部的 80 端口
+EXPOSE 80
 
 # 啟動 Nginx
 CMD ["nginx", "-g", "daemon off;"]

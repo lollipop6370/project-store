@@ -184,11 +184,11 @@ export const newOrderItems = (obj) => {
 }
 /**
  * 讀取指定用戶所有訂單
- * -> token:String(head)
+ * -> token:String(head) , pageSize:int
  * <- 數組:[{ oid:int, status:int, price:int, createTime:String }]
  */
-export const readOrder = () => {
-  return request.get("order");
+export const readOrder = (currentPage, pageSize) => {
+  return request.get("order",{params:{currentPage:currentPage,pageSize:pageSize}});
 }
 /**
  * 讀取指定訂單的詳細資訊
@@ -235,7 +235,7 @@ export const getBEOrderCount = (pageSize) => {
  * -> pageSize:int, token:String(head)
  * <- totalPage:int
  */
-export const getOrderCount = (pageSize) => {
+export const getOrderPageCount = (pageSize) => {
   return request.get("order/totalPage",{params:{pageSize:pageSize}});
 }
 /**
@@ -269,4 +269,18 @@ export const getProductByFilterCount = (type,priceRange,pageSize) => {
  */
 export const productCountEdit = (itemId,count) => {
   return request.put("cart/productCount",{pid:itemId,count:count});
+}
+/**
+ * 加密訂單資訊
+ * -> order:{ oid:int, totalPrice:int }
+ * <- { MerchantID:string, TradeInfo:string, TradeSha:string, Version:string}
+ */
+export const createPayment = (order) => {
+  return request.post("order/createPayment",order);
+}
+/**
+ * 
+ */
+export const delOrder = (oid) => {
+  return request.delete("order/noPayOrder",{params:{oid:oid}});
 }

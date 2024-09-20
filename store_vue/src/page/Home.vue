@@ -4,7 +4,7 @@
     <section class="hero" ref="heroSection">
 
       <div class="hero-content">
-        <h1>Welcome to PUIK Store</h1>
+        <h1>Welcome to PUIK Store!</h1>
         <p>Your one-stop shop for all your needs</p>
         <button class="cta-button">Shop Now</button>
       </div>
@@ -55,7 +55,7 @@
         <div class="products-grid">
           <div class="product-card" v-for="product in normalProduct" :key="product.pid">
             <div class="can-click" @click="productClick(product.pid)">
-              <img :src="product.image" :alt="product.name" />
+              <img class="product-img" :src="product.image" :alt="product.name" />
               <h3>{{ product.name }}</h3>
               <p>價格 : {{ product.price }}</p>
             </div>
@@ -145,6 +145,9 @@
 </script>
   
 <style scoped>
+  .product-img {
+    max-height: 210px;
+  }
   /* 英雄區域的樣式 */
   .hero {
     background-image: url('@/components/slider/slider-1.jpg');
