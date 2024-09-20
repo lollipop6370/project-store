@@ -34,7 +34,7 @@
       <!-- 配送地址 -->
       <div class="shipping-address">
         <h3>Shipping Address</h3>
-        <form @submit.prevent="submitShipping">
+        <form @submit.prevent="confirmOrder">
           <div class="form-group">
             <label for="name">Receiver Name</label>
             <input type="text" id="name" v-model="orderForm.receiver" required />
@@ -51,12 +51,13 @@
             <label for="postal">Postal Code</label>
             <input type="int" id="postal" v-model="orderForm.postal" required />
           </div>
+          <!-- 確認訂單按鈕 -->
+          <div class="checkout-section">
+            <button class="checkout-button" type="submit">Confirm Order</button>
+          </div>
         </form>
       </div>
-      <!-- 確認訂單按鈕 -->
-      <div class="checkout-section">
-        <button class="checkout-button" @click="confirmOrder">Confirm Order</button>
-      </div>
+      
 
       <!-- form post 請求跳轉藍新金流 -->
       <div v-if="isPayOpen" class="modal-overlay" @click="closePayModal">
