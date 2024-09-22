@@ -25,11 +25,11 @@
                     <td>{{ item.postal + item.city + item.address }}</td>
                     <td>{{ item.receiver }}</td>
                     <td>
-                        <button class="btn-detail" @click="btnDetail(item)">詳細</button>
+                        <button class="btn" @click="btnDetail(item)">詳細</button>
                     </td>
                     <td>
                         <button class="btn" @click="onChangeStatus(item)">變更狀態</button> /
-                        <button class="btn">移除</button>
+                        <button class="btn" @click="onDelOrder(item.oid)">移除</button>
                     </td>
                 </tr>
             </tbody>
@@ -40,7 +40,7 @@
             <span>Page {{ pageInfo.currentPage }} of {{ pageInfo.totalPage }}</span>
             <button @click="nextPage" :disabled="pageInfo.currentPage === pageInfo.totalPage">下一頁</button>
         </div>
-        <!-- 懸浮視窗 -->
+        <!-- 變更狀態懸浮視窗 -->
         <div v-if="isModalOpen" class="modal-overlay" @click="closeDelModal">
             <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
             <h2>訂單# {{ orderNumber }}</h2>
@@ -69,16 +69,24 @@
             <h3>收件人 : {{ receiverName }}</h3>
             <h3>配送地址 : {{ receiverAddress }}</h3>
             <button class="btn-config" @click="closeDelModal">確定</button>
+            </div>
         </div>
-    </div>
+        <!-- 刪除訂單懸浮視窗 -->
+        <div v-if="isDelOrderModalOpen" class="modal-overlay" @click="closeDelOrderModal">
+            <div class="modal-content" @click.stop>  <!-- 懸浮視窗區域不會被背景點擊事件影響 -->
+            <h2>刪除訂單# {{ onDelSelect }}?</h2>
+            <button class="btn-config" @click="delOrderConfirm">確定</button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
   import { onMounted, ref } from 'vue';
-  import { getBEOrder, getBEOrderItems, editBEOrderStatus, getBEOrderCount } from '@/api';
+  import { getBEOrder, getBEOrderItems, editBEOrderStatus, getBEOrderCount, backendDelOrder } from '@/api';
 
   const isModalOpen = ref(false);
+  const isDelOrderModalOpen = ref(false);
   const orderForm = ref([
     {
         oid:'',
@@ -141,6 +149,21 @@
     else
         item.status = 0;
     await editBEOrderStatus(item.oid,item.status);
+  };
+
+  const onDelSelect = ref();
+  const onDelOrder = (oid) => {
+    onDelSelect.value = oid;
+    isDelOrderModalOpen.value = true;
+  };
+  const closeDelOrderModal = () => {
+    isDelOrderModalOpen.value = false;
+  };
+  const delOrderConfirm = async () => {
+    await backendDelOrder(onDelSelect.value);
+    orderForm.value = await getBEOrder(pageInfo.value);
+    pageInfo.value.totalPage = await getBEOrderCount(pageInfo.value.pageSize);
+    isDelOrderModalOpen.value = false;
   };
 </script>
 
@@ -233,8 +256,22 @@
     background-color: #45a049;
   }
 
+  .btn {
+    padding: 3px 6px;
+    background-color: #87b36e;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  .btn:hover {
+    background-color: #45a049;
+  }
+
   select {
     font-size: 0.9rem;
     padding: 2px 5px;
   }
+
 </style>

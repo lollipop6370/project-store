@@ -24,7 +24,11 @@
             </div>
             <div class="input-group">
                 <label for="type">商品總類</label>
-                <input type="int" id="type" v-model="formData.type" required>
+                <select id="dropdown" v-model="formData.type" required>
+                  <option v-for="option in options" :key="option.tid" :value="option.tid">
+                    {{ option.tname }}
+                  </option>
+                </select>
             </div>
             <div class="input-group">
                 <label for="count">商品數量</label>
@@ -63,7 +67,11 @@
             </div>
             <div class="input-group">
                 <label for="type">商品總類</label>
-                <input type="int" id="type" v-model="formData.type" required>
+                <select id="dropdown" v-model="formData.type" required>
+                  <option v-for="option in options" :key="option.tid" :value="option.tid">
+                    {{ option.tname }}
+                  </option>
+                </select>
             </div>
             <div class="input-group">
                 <label for="count">商品數量</label>
@@ -79,14 +87,10 @@
 
 <script setup>
   import DynamicTable from '@/components/DynamicTable.vue';
-  import { backendProduct , backendProductPage , backendProductEdit , backendProductDel , backendProductImg } from '@/api';
+  import { backendProduct , backendProductPage , backendProductEdit , backendProductDel , backendProductImg , getTypeName } from '@/api';
   import { onMounted, ref } from 'vue';
   const tableHeaders = ref(['image', 'pid', 'name', 'price', 'type', 'count', 'edit / delete']);
-  const tableData = ref([
-        ['John', 28, '工程師'],
-        ['Jane', 32, '設計師'],
-        ['Mike', 36, '產品經理']
-  ]);
+  const tableData = ref([]);
   const tableImgData = ref([]);
   const pageInfo = ref({
     currentPage: 1,
@@ -105,7 +109,9 @@
     count: null,
     image: ""
   });
+  const options = ref([]);
   const init = async() => {  //初始化載入商品
+    options.value = await getTypeName();
     let data = await backendProduct(pageInfo.value);
     tableImgData.value = [];
     tableData.value = [];
@@ -235,7 +241,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1100;
+    z-index: 8000;
   }
 
   .modal-content {

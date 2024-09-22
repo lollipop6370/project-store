@@ -279,8 +279,23 @@ export const createPayment = (order) => {
   return request.post("order/createPayment",order);
 }
 /**
- * 
+ * 刪除沒付款的訂單
  */
 export const delOrder = (oid) => {
   return request.delete("order/noPayOrder",{params:{oid:oid}});
+}
+/**
+ * 獲取商品種類
+ * <- 數組:[{tid:int, tname:string}]
+ */
+export const getTypeName = () => {
+  return request.get("backend/product/type");
+}
+/**
+ * 後端管理台刪除訂單
+ * -> oid:int
+ * <- null
+ */
+export const backendDelOrder = (oid) => {
+  return request.delete("backend/order",{params:{oid:oid}});
 }
