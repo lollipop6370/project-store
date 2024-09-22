@@ -13,8 +13,8 @@
     import { computed } from 'vue';
 
     const route = useRoute();
-    const showNavBar = computed(() => route.meta.showNavBar !== false);
-    const showBEBar = computed(() => route.meta.showBEBar !== false);
+    const showNavBar = computed(() => route.meta.showNavBar === true);
+    const showBEBar = computed(() => route.meta.showBEBar === true);
 </script>
   
 <style>

@@ -24,8 +24,8 @@
                     <button class="btn" @click="showOrderDetail(item.oid)">詳情</button>
                 </td>
                 <td v-if="item.pay === 0">
-                  <button @click="onPay(item)">付款</button>
-                  <button @click="onOrderDel(item.oid)">刪單</button>
+                  <button class="btn" @click="onPay(item)">付款</button>
+                  <button class="btn" @click="onOrderDel(item.oid)">刪單</button>
                 </td>
                 <td v-if="item.pay === 1">付款完成</td>
             </tr>
@@ -77,7 +77,7 @@
           <input type="hidden" name="TradeInfo" :value="myPayment.TradeInfo">
           <input type="hidden" name="TradeSha" :value="myPayment.TradeSha">
           <input type="hidden" name="Version" :value="myPayment.Version">
-          <input type="submit" value="前往結帳">
+          <input class="btn" type="submit" value="前往結帳">
         </form>
       </div>
     </div>
@@ -237,7 +237,6 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px;
   }
   .btn:hover {
     background-color: #45a049;
