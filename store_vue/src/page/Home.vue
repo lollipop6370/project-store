@@ -6,7 +6,7 @@
       <div class="hero-content">
         <h1>Welcome to PUIK Store!</h1>
         <p>Your one-stop shop for all your needs</p>
-        <button class="cta-button">Shop Now</button>
+        <button class="cta-button" @click="onShop">Shop Now</button>
       </div>
     </section>
 
@@ -134,8 +134,19 @@
   const productClick = (pid) =>{ //當商品被點擊時，路由至商品詳情並傳是哪個塗片傳的參數
     router.push({ name:"productDetail" , query : { pid:pid }});
   }
+
+  const onShop = ()=> {
+    let top = document.documentElement.scrollTop;//獲取當前滾動座標位置
+      const timeTop = setInterval(() => {
+        document.documentElement.scrollTop = top += 50;//一次滑動50
+        if (top >= 900) {
+          clearInterval(timeTop);
+        }
+      }, 20);//定時調用函數展示滑動動畫
+  };
   // 組件掛載時調用(生命週期)
   onMounted( async () => {
+    //window.addEventListener('scroll', handleScroll);
     paginatedProducts();
     productTypes.value = await getProductType();
     if(userStore.getUserStoreLogin === true){   //如果用戶有登入
