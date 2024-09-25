@@ -19,6 +19,7 @@
           </div>
           <button type="submit">登入</button>
         </form>
+        <div>測試用帳號:root 密碼:root</div>
       </div>
     </div>
 </template>

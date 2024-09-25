@@ -11,6 +11,7 @@
                     <th>Address</th>
                     <th>Reciver</th>
                     <th>Detail</th>
+                    <th>Pay</th>
                     <th>Control</th>
                 </tr>
             </thead>
@@ -27,8 +28,10 @@
                     <td>
                         <button class="btn" @click="btnDetail(item)">詳細</button>
                     </td>
+                    <td v-if="item.pay === 0"> 未付款 </td>
+                    <td v-else-if="item.pay === 1"> 已付款 </td>
                     <td>
-                        <button class="btn" @click="onChangeStatus(item)">變更狀態</button> /
+                        <button class="btn" :disabled="item.pay === 0" @click="onChangeStatus(item)">變更狀態</button> /
                         <button class="btn" @click="onDelOrder(item.oid)">移除</button>
                     </td>
                 </tr>
@@ -96,7 +99,8 @@
         address:'555',
         city:'66',
         postal:'',
-        receiver:''
+        receiver:'',
+        pay:''
     }
   ]);
   const pageInfo = ref({
@@ -272,6 +276,12 @@
   select {
     font-size: 0.9rem;
     padding: 2px 5px;
+  }
+
+  .btn:disabled {
+    background-color: #b3b4b2;
+    color: gray;
+    cursor: default;
   }
 
 </style>

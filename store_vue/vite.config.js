@@ -13,7 +13,7 @@ export default defineConfig({
     open:true,
     proxy: {
       '/app-dev': {
-        target: 'http://34.44.233.80:8002/',
+        target: 'http://35.188.156.117:8002/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/app-dev/, '')
       }
